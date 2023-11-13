@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wishlist_api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace wishlist_api.Controllers
 {
@@ -24,6 +25,7 @@ namespace wishlist_api.Controllers
 
         // GET: api/Articulos
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulos()
         {
             try

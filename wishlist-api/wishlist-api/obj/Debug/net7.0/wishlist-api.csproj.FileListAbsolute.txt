@@ -255,3 +255,4 @@ C:\Users\Francine\Desktop\wishlist-app\wishlist-api\wishlist-api\obj\Debug\net7.
 C:\Users\Francine\Desktop\wishlist-app\wishlist-api\wishlist-api\obj\Debug\net7.0\wishlist-api.pdb
 C:\Users\Francine\Desktop\wishlist-app\wishlist-api\wishlist-api\obj\Debug\net7.0\wishlist-api.genruntimeconfig.cache
 C:\Users\Francine\Desktop\wishlist-app\wishlist-api\wishlist-api\obj\Debug\net7.0\ref\wishlist-api.dll
+C:\Users\Francine\Desktop\wishlist-app\wishlist-api\wishlist-api\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

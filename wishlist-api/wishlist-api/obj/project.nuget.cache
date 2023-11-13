@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zoSlxOlsVmigRJVQedlz2w6TgaiA8DEkL9hIfnNFs83T9HmQ5+gWhBHS2F+EUzWdwMQFYS8oK/4GfkTm6TB16A==",
+  "dgSpecHash": "ygsoITjmR6u4MRjEUuRikm7GJtL8vtwXwFLQ0mDfiAp3mv8sCcic5WkII+pUQ8JmD62gZbiXPhQrqfskgzC4cw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Francine\\Desktop\\wishlist-app\\wishlist-api\\wishlist-api\\wishlist-api.csproj",
   "expectedPackageFiles": [
@@ -56,6 +56,7 @@
     "C:\\Users\\Francine\\.nuget\\packages\\humanizer.core.zh-cn\\2.14.1\\humanizer.core.zh-cn.2.14.1.nupkg.sha512",
     "C:\\Users\\Francine\\.nuget\\packages\\humanizer.core.zh-hans\\2.14.1\\humanizer.core.zh-hans.2.14.1.nupkg.sha512",
     "C:\\Users\\Francine\\.nuget\\packages\\humanizer.core.zh-hant\\2.14.1\\humanizer.core.zh-hant.2.14.1.nupkg.sha512",
+    "C:\\Users\\Francine\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.13\\microsoft.aspnetcore.authentication.jwtbearer.7.0.13.nupkg.sha512",
     "C:\\Users\\Francine\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\7.0.13\\microsoft.aspnetcore.jsonpatch.7.0.13.nupkg.sha512",
     "C:\\Users\\Francine\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\7.0.13\\microsoft.aspnetcore.mvc.newtonsoftjson.7.0.13.nupkg.sha512",
     "C:\\Users\\Francine\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.11\\microsoft.aspnetcore.openapi.7.0.11.nupkg.sha512",
