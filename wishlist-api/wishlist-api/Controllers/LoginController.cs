@@ -25,6 +25,15 @@ namespace wishlist_api.Controllers
             _config = configuration;
         }
 
+        [HttpGet]
+        public IActionResult GetNewCurrentUser()
+        {
+            var currentUser = GetCurrentUser();
+            return Ok($"Hola {currentUser.UsuNombre}, tu correo es {currentUser.UsuCorreo}");
+            //return Ok(currentUser);
+        }
+
+
         [HttpPost]
         public IActionResult Login(LoginUser userLogin)
         {
@@ -63,8 +72,9 @@ namespace wishlist_api.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.UsuNombre),
                 new Claim(ClaimTypes.Surname, user.UsuApellidos),
                 new Claim(ClaimTypes.Email, user.UsuCorreo),
-                new Claim(ClaimTypes.Role, user.UsuRol.ToString())
-         
+                new Claim(ClaimTypes.Role, user.UsuRol.ToString()),
+                new Claim("UserId", user.UsuId.ToString()),
+
             };
 
             // Crear el token
@@ -76,6 +86,34 @@ namespace wishlist_api.Controllers
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private Usuario GetCurrentUser()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null) {
+
+                var userIdClaim = identity.FindFirst("UserId");
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
+                {
+                    // Cargar el usuario desde el contexto o la base de datos utilizando el ID del usuario
+                    var currentUser = _context.Usuarios.FirstOrDefault(u => u.UsuId == userId);
+
+                    if (currentUser != null)
+                    {
+                        return new Usuario
+                        {
+                            UsuNombre = currentUser.UsuNombre,
+                            UsuApellidos = currentUser.UsuApellidos,
+                            UsuCorreo = currentUser.UsuCorreo,
+                            UsuRol = currentUser.UsuRol,
+                        };
+                    }
+                }
+            }
+
+            return null;
         }
 
     }
