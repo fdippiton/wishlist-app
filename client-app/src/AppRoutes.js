@@ -1,6 +1,7 @@
 import { Home } from './components/Home';
 import { Signup } from './components/Signup';
-import { Signin } from './components/Signin';
+import Signin from './components/Signin';
+import PerfilUsuario from './components/PerfilUsuario';
 import { CrearListaRegalos } from './components/CrearListaRegalos';
 
 const AppRoutes = [
@@ -19,6 +20,10 @@ const AppRoutes = [
   {
     path: '/CrearListaRegalos',
     element: <CrearListaRegalos />,
+  },
+  {
+    path: '/PerfilUsuario',
+    element: <PerfilUsuario />,
   },
 ];
 

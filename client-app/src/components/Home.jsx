@@ -29,16 +29,16 @@ export function Home() {
         <div className="col-6">
           <form className="text-center">
             <h6>Inserta codigo de lista o usuario para buscar una lista</h6>
-            <div class="mb-3">
+            <div className="mb-3">
               {/*<label for="exampleInputPassword1" class="form-label">Inserta codigo de lista o usuario</label>*/}
               <input
                 type="password"
-                class="form-control"
+                className="form-control"
                 id="exampleInputPassword1"
                 placeholder="1233212 o Isak34"
               />
             </div>
-            <button type="submit" class="btn btn-outline-primary">
+            <button type="submit" className="btn btn-outline-primary">
               Buscar
             </button>
           </form>

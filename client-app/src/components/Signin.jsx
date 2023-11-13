@@ -1,6 +1,46 @@
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export function Signin() {
+const Signin = ({ onLogin }) => {
+  const navigate = useNavigate();
+
+  const [loginData, setLoginData] = useState({
+    UsuCorreo: '',
+    UsuContrasena: '',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
+
+  const handleLoginButtonClick = async () => {
+    try {
+      const response = await fetch('http://localhost:5109/api/Login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (response.ok) {
+        const token = await response.text();
+        console.log('Inicio de sesión exitoso. Token:', token);
+        localStorage.setItem('accessToken', token); // Almacena el token en localStorage
+        onLogin();
+        navigate('/PerfilUsuario');
+        // Llama a la función proporcionada para manejar el inicio de sesión en el componente padre
+      } else {
+        console.error('Error al iniciar sesión');
+        // Maneja los errores del servidor
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  };
+
   return (
     <div className="row mt-5">
       <div className="col-4 offset-4">
@@ -16,8 +56,9 @@ export function Signin() {
               className="form-control form-control-sm"
               placeholder="Melek@example.com"
               type="email"
-              id="formEmail"
-              name="formEmail"
+              name="UsuCorreo"
+              value={loginData.UsuCorreo}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -31,13 +72,18 @@ export function Signin() {
               className="form-control form-control-sm"
               placeholder="2h343hsdjH"
               type="password"
-              id="formPassword"
-              name="formPassword"
+              name="UsuContrasena"
+              value={loginData.UsuContrasena}
+              onChange={handleInputChange}
             />
           </div>
 
           <div className="d-grid gap-2 col-12 mx-auto mt-4">
-            <button type="button" className="btn btn-primary">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleLoginButtonClick}
+            >
               Iniciar sesi&oacute;n
             </button>
           </div>
@@ -52,4 +98,6 @@ export function Signin() {
       </div>
     </div>
   );
-}
+};
+
+export default Signin;

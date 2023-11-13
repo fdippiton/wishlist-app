@@ -1,6 +1,47 @@
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function Signup() {
+  const navigate = useNavigate();
+
+  const [registrationData, setRegistrationData] = useState({
+    UsuNombre: '',
+    UsuApellidos: '',
+    UsuCorreo: '',
+    UsuContrasena: '',
+    UsuRol: 2,
+    UsuEstatus: 'A',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRegistrationData({ ...registrationData, [name]: value });
+  };
+
+  const handleRegister = async () => {
+    try {
+      const response = await fetch('http://localhost:5109/api/Usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registrationData),
+      });
+
+      if (response.ok) {
+        console.log('Usuario registrado exitosamente');
+        navigate('/');
+        // Maneja la respuesta del servidor (puede redirigir al usuario o mostrar un mensaje de éxito)
+      } else {
+        console.error('Error al registrar usuario');
+        // Maneja los errores del servidor
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  };
+
   return (
     <div className="row mt-5">
       <div className="col-4 offset-4">
@@ -16,8 +57,9 @@ export function Signup() {
               className="form-control form-control-sm"
               placeholder="Melek"
               type="text"
-              id="formName"
-              name="formName"
+              name="UsuNombre"
+              value={registrationData.UsuNombre}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -31,8 +73,9 @@ export function Signup() {
               className="form-control form-control-sm"
               placeholder="Olsen"
               type="text"
-              id="formLastname"
-              name="formLastname"
+              name="UsuApellidos"
+              value={registrationData.UsuApellidos}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -46,8 +89,9 @@ export function Signup() {
               className="form-control form-control-sm"
               placeholder="Melek@example.com"
               type="email"
-              id="formEmail"
-              name="formEmail"
+              name="UsuCorreo"
+              value={registrationData.Correo}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -61,13 +105,18 @@ export function Signup() {
               className="form-control form-control-sm"
               placeholder="2h343hsdjH"
               type="password"
-              id="formPassword"
-              name="formPassword"
+              name="UsuContrasena"
+              value={registrationData.UsuContrasena}
+              onChange={handleInputChange}
             />
           </div>
 
           <div className="d-grid gap-2 col-12 mx-auto mt-4">
-            <button type="button" className="btn btn-primary">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleRegister}
+            >
               Registrarse
             </button>
           </div>
