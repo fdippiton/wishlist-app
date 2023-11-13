@@ -1,7 +1,11 @@
 import gift from '../undraw_gift_box.svg';
 import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { MyContext } from '../App';
 
 export function Home() {
+  const { authenticated } = useContext(MyContext);
+
   const styles = {
     width: '400px',
     height: '400px',
@@ -16,9 +20,18 @@ export function Home() {
             Crea una lista de deseos y compartela con tus familiares y amigos.
           </h4>
           {/* <button type="submit" class="btn btn-primary" style={{ width: '200px' }}>Crear</button>*/}
-          <Link className="text-dark text-decoration-none" to="/signup">
-            <b className="btn btn-outline-primary">Crear lista</b>
-          </Link>
+          {authenticated ? (
+            <Link
+              className="text-dark text-decoration-none"
+              to="/PerfilUsuario"
+            >
+              <b className="btn btn-outline-primary">Crear lista</b>
+            </Link>
+          ) : (
+            <Link className="text-dark text-decoration-none" to="/signup">
+              <b className="btn btn-outline-primary">Crear lista</b>
+            </Link>
+          )}
         </div>
         <div className="col-6 text-center">
           <img src={gift} className="" style={styles} alt="regalo" />
