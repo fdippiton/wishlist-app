@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wishlist_api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace wishlist_api.Controllers
 {
@@ -23,8 +24,9 @@ namespace wishlist_api.Controllers
         }
 
         // GET: api/ListaRegalos
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ListaRegalo>>> GetListaRegalos()
+        [HttpGet("{userId}")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<ListaRegalo>>> GetListaRegalos(int userId)
         {
             try
             {
@@ -36,6 +38,7 @@ namespace wishlist_api.Controllers
                 var listaRegalos = await _context.ListaRegalos
                     .Include(x => x.LisRegUsuario!.UsuRolNavigation)
                     .Include(x => x.LisRegLisPriv)
+                    .Where(lista => lista.LisRegUsuarioId == userId)
                     .ToListAsync();
 
                 // Configura las opciones de serialización para manejar referencias circulares
@@ -69,22 +72,22 @@ namespace wishlist_api.Controllers
         }
 
         // GET: api/ListaRegalos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ListaRegalo>> GetListaRegalo(int id)
-        {
-          if (_context.ListaRegalos == null)
-          {
-              return NotFound();
-          }
-            var listaRegalo = await _context.ListaRegalos.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<ListaRegalo>> GetListaRegalo(int id)
+        //{
+        //  if (_context.ListaRegalos == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var listaRegalo = await _context.ListaRegalos.FindAsync(id);
 
-            if (listaRegalo == null)
-            {
-                return NotFound();
-            }
+        //    if (listaRegalo == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return listaRegalo;
-        }
+        //    return listaRegalo;
+        //}
 
         // PUT: api/ListaRegalos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -26,7 +26,7 @@ namespace wishlist_api.Controllers
         // GET: api/Articulos
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulos()
+        public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulos(int listId)
         {
             try
             {
@@ -39,6 +39,7 @@ namespace wishlist_api.Controllers
                     .Include(x => x.ArtLisReg!.LisRegLisPriv)
                     .Include(x => x.ArtLisReg!.LisRegUsuario)
                     .Include(x => x.ArtRegEstatus)
+                    .Where(art => art.ArtLisRegId == listId)
                     .ToListAsync();
 
                 // Configura las opciones de serialización para manejar referencias circulares

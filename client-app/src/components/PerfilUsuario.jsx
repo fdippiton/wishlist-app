@@ -6,6 +6,8 @@ import { BiSolidUserCircle } from 'react-icons/bi';
 
 const PerfilUsuario = () => {
   const [user, setUser] = useState(null);
+  const [currentToken, setcurrentToken] = useState(null);
+  const [listasRegalos, setListasRegalos] = useState([]);
   const navigate = useNavigate();
   const { authenticated, setAuthenticated } = useContext(MyContext);
 
@@ -14,6 +16,7 @@ const PerfilUsuario = () => {
   useEffect(() => {
     // Obtiene el token del localStorage
     const token = localStorage.getItem('accessToken');
+    setcurrentToken(token);
 
     if (token) {
       // Decodifica el token
@@ -24,6 +27,52 @@ const PerfilUsuario = () => {
       console.log(decoded);
     }
   }, []);
+
+  useEffect(() => {
+    const fetchListasRegalos = async () => {
+      try {
+        console.log('Fetching Listas Regalos...');
+        console.log('API URL:', process.env.WISHLIST_API);
+        console.log('UserId:', user['UserId']);
+        console.log('Token:', currentToken);
+
+        const response = await fetch(
+          'http://localhost:5109/api/listaRegalos/' + user['UserId'],
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${currentToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (response.ok) {
+          const lists = await response.json();
+          setListasRegalos(lists);
+          // console.log(response);
+          // console.log(lists);
+          const values = lists.$values;
+          values.forEach((item) => {
+            // Aquí puedes hacer algo con cada elemento dentro de $values
+            console.log(item);
+          });
+        } else {
+          // console.error(
+          //   'Error en la solicitud:',
+          //   response.status,
+          //   response.statusText
+          // );
+          const responseBody = await response.text();
+          console.error('Cuerpo de la respuesta:', responseBody);
+        }
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+    };
+
+    fetchListasRegalos();
+  }, [user, currentToken]);
 
   const handleLogout = () => {
     setAuthenticated(false);
@@ -73,23 +122,29 @@ const PerfilUsuario = () => {
 
                 {/* Lista 1 */}
 
-                <div className="col-6 mb-2">
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title">Special list</h5>
-                      <p className="card-text">
-                        With supporting text below as a natural lead-in to
-                        additional content.
-                      </p>
-                      <a href="/" className="btn btn-primary">
-                        Ver articulos
-                      </a>
+                {listasRegalos &&
+                  listasRegalos.$values &&
+                  listasRegalos.$values.map((listaRegalos) => (
+                    <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
+                      <div className="card">
+                        <div className="card-body">
+                          <h5 className="card-title">
+                            {listaRegalos.LisRegNombre}
+                          </h5>
+                          <p className="card-text">
+                            {listaRegalos.LisRegLisPriv &&
+                              listaRegalos.LisRegLisPriv.LisPrivPrivacidad}
+                          </p>
+                          <a href="/" className="btn btn-outline-primary">
+                            Ver articulos
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  ))}
 
                 {/* Lista 2 */}
-                <div className="col-6 mb-2">
+                {/* <div className="col-6 mb-2">
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">Special list</h5>
@@ -102,7 +157,7 @@ const PerfilUsuario = () => {
                       </a>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               {/* Renderiza el resto de la interfaz de usuario */}
             </div>
