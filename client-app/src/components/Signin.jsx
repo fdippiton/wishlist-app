@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const Signin = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -30,7 +31,18 @@ const Signin = ({ onLogin }) => {
         console.log('Inicio de sesión exitoso. Token:', token);
         localStorage.setItem('accessToken', token); // Almacena el token en localStorage
         onLogin();
-        navigate('/PerfilUsuario');
+
+        const decoded = jwtDecode(token);
+        console.log(decoded);
+        if (
+          decoded[
+            'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+          ] === '1'
+        ) {
+          navigate('/PerfilAdmin');
+        } else {
+          navigate('/PerfilUsuario');
+        }
         // Llama a la función proporcionada para manejar el inicio de sesión en el componente padre
       } else {
         console.error('Error al iniciar sesión');

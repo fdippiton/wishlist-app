@@ -4,12 +4,14 @@ import { MyContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import { BiSolidUserCircle } from 'react-icons/bi';
 
-const PerfilUsuario = () => {
+const PerfilAdmin = () => {
   const [user, setUser] = useState(null);
   const [currentToken, setcurrentToken] = useState(null);
   const [listasRegalos, setListasRegalos] = useState([]);
   const navigate = useNavigate();
   const { authenticated, setAuthenticated } = useContext(MyContext);
+
+  console.log(authenticated);
 
   useEffect(() => {
     // Obtiene el token del localStorage
@@ -72,11 +74,11 @@ const PerfilUsuario = () => {
     fetchListasRegalos();
   }, [user, currentToken]);
 
-  // const handleLogout = () => {
-  //   setAuthenticated(false);
-  //   localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
-  //   navigate('/');
-  // };
+  //   const handleLogout = () => {
+  //     setAuthenticated(false);
+  //     localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
+  //     navigate('/');
+  //   };
 
   return (
     <div className="container mt-3">
@@ -91,7 +93,7 @@ const PerfilUsuario = () => {
                   </h1>
                   <p className="m-0 fs-4">
                     {'   '}
-                    Bienvenid@,{' '}
+                    Admin{' '}
                     {
                       user[
                         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
@@ -108,41 +110,56 @@ const PerfilUsuario = () => {
                   >
                     Cerrar Sesión
                   </button>
-                </div>
-              </div> */}
+                </div> */}
+              </div>
 
-                <div className="mt-3">
-                  <p className="fs-3">Mis listas de deseos</p>
-                </div>
+              <div className="mt-3">
+                <p className="fs-3">Admin</p>
+              </div>
 
-                <div className="row d-flex flex-column">
-                  {/* Listar listas de regalo */}
+              <div className="row d-flex flex-column">
+                {/* Listar listas de regalo */}
 
-                  {/* Lista 1 */}
+                {/* Lista 1 */}
 
-                  {listasRegalos &&
-                    listasRegalos.$values &&
-                    listasRegalos.$values.map((listaRegalos) => (
-                      <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
-                        <div className="card">
-                          <div className="card-body">
-                            <h5 className="card-title">
-                              {listaRegalos.LisRegNombre}
-                            </h5>
-                            <p className="card-text">
-                              {listaRegalos.LisRegLisPriv &&
-                                listaRegalos.LisRegLisPriv.LisPrivPrivacidad}
-                            </p>
-                            <a href="/" className="btn btn-outline-primary">
-                              Ver articulos
-                            </a>
-                          </div>
+                {listasRegalos &&
+                  listasRegalos.$values &&
+                  listasRegalos.$values.map((listaRegalos) => (
+                    <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
+                      <div className="card">
+                        <div className="card-body">
+                          <h5 className="card-title">
+                            {listaRegalos.LisRegNombre}
+                          </h5>
+                          <p className="card-text">
+                            {listaRegalos.LisRegLisPriv &&
+                              listaRegalos.LisRegLisPriv.LisPrivPrivacidad}
+                          </p>
+                          <a href="/" className="btn btn-outline-primary">
+                            Ver articulos
+                          </a>
                         </div>
                       </div>
-                    ))}
-                </div>
-                {/* Renderiza el resto de la interfaz de usuario */}
+                    </div>
+                  ))}
+
+                {/* Lista 2 */}
+                {/* <div className="col-6 mb-2">
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">Special list</h5>
+                      <p className="card-text">
+                        With supporting text below as a natural lead-in to
+                        additional content.
+                      </p>
+                      <a href="/" className="btn btn-primary">
+                        Ver articulos
+                      </a>
+                    </div>
+                  </div>
+                </div> */}
               </div>
+              {/* Renderiza el resto de la interfaz de usuario */}
             </div>
           ) : (
             <p>No has iniciado sesión.</p>
@@ -154,4 +171,4 @@ const PerfilUsuario = () => {
   );
 };
 
-export default PerfilUsuario;
+export default PerfilAdmin;

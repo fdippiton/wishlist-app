@@ -31,7 +31,7 @@ export function Signup() {
 
       if (response.ok) {
         console.log('Usuario registrado exitosamente');
-        navigate('/');
+        navigate('/Signin');
         // Maneja la respuesta del servidor (puede redirigir al usuario o mostrar un mensaje de éxito)
       } else {
         console.error('Error al registrar usuario');
