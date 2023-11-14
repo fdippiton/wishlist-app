@@ -24,8 +24,8 @@ namespace wishlist_api.Controllers
         }
 
         // GET: api/Articulos
-        [HttpGet]
-        [Authorize]
+        // Obtener los articulos pertenecientes a una lista especifica
+        [HttpGet("{listId}")]
         public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulos(int listId)
         {
             try
@@ -72,23 +72,70 @@ namespace wishlist_api.Controllers
             }
         }
 
-        // GET: api/Articulos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Articulo>> GetArticulo(int id)
+        // Obtener todos los articulos
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulos()
         {
-          if (_context.Articulos == null)
-          {
-              return NotFound();
-          }
-            var articulo = await _context.Articulos.FindAsync(id);
-
-            if (articulo == null)
+            try
             {
-                return NotFound();
-            }
+                if (_context.Articulos == null)
+                {
+                    return NotFound();
+                }
 
-            return articulo;
+                var articulos = await _context.Articulos
+                    .Include(x => x.ArtLisReg!.LisRegLisPriv)
+                    .Include(x => x.ArtLisReg!.LisRegUsuario)
+                    .Include(x => x.ArtRegEstatus)
+                    .ToListAsync();
+
+                // Configura las opciones de serialización para manejar referencias circulares
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    MaxDepth = 64, // Ajusta según sea necesario para la profundidad de tu objeto
+
+                };
+
+                // Serializa los datos utilizando las opciones configuradas
+                var jsonResult = JsonSerializer.Serialize(articulos, options);
+
+                // Devuelve el resultado serializado
+                return Content(jsonResult, "application/json");
+            }
+            catch (Exception ex)
+            {
+                // Registra la excepción para obtener más detalles en los registros
+                Console.WriteLine($"Error al realizar la operación GET: {ex}");
+
+                // Registra la excepción interna si está presente
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException}");
+                }
+
+                // Devuelve un error interno del servidor con un mensaje personalizado
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
+
+        // GET: api/Articulos/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Articulo>> GetArticulo(int id)
+        //{
+        //  if (_context.Articulos == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var articulo = await _context.Articulos.FindAsync(id);
+
+        //    if (articulo == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return articulo;
+        //}
 
         // PUT: api/Articulos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
