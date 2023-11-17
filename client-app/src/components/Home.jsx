@@ -1,14 +1,14 @@
-import gift from '../undraw_gift_box.svg';
-import { Link } from 'react-router-dom';
-import React, { useContext } from 'react';
-import { MyContext } from '../App';
+import gift from "../undraw_gift_box.svg";
+import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { MyContext } from "../App";
 
 export function Home() {
   const { authenticated } = useContext(MyContext);
 
   const styles = {
-    width: '400px',
-    height: '400px',
+    width: "400px",
+    height: "400px",
   };
 
   return (
@@ -23,7 +23,7 @@ export function Home() {
           {authenticated ? (
             <Link
               className="text-dark text-decoration-none"
-              to="/PerfilUsuario"
+              to="/perfilUsuario"
             >
               <b className="btn btn-outline-primary">Crear lista</b>
             </Link>

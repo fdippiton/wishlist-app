@@ -1,9 +1,10 @@
-import { Home } from './components/Home';
-import { Signup } from './components/Signup';
-import Signin from './components/Signin';
-import PerfilUsuario from './components/PerfilUsuario';
-import { CrearListaRegalos } from './components/CrearListaRegalos';
-import PerfilAdmin from './components/PerfilAdmin';
+import { Home } from "./components/Home";
+import { Signup } from "./components/Signup";
+import Signin from "./components/Signin";
+import PerfilUsuario from "./components/PerfilUsuario";
+import { CrearListaRegalos } from "./components/CrearListaRegalos";
+import PerfilAdmin from "./components/PerfilAdmin";
+import React from "react";
 
 const AppRoutes = [
   {
@@ -11,23 +12,23 @@ const AppRoutes = [
     element: <Home />,
   },
   {
-    path: '/signup',
+    path: "/signup",
     element: <Signup />,
   },
   {
-    path: '/signin',
+    path: "/signin",
     element: <Signin />,
   },
   {
-    path: '/CrearListaRegalos',
+    path: "/crearListaRegalos",
     element: <CrearListaRegalos />,
   },
   {
-    path: '/perfilUsuario',
+    path: "/perfilUsuario",
     element: <PerfilUsuario />,
   },
   {
-    path: '/perfilAdmin',
+    path: "/perfilAdmin",
     element: <PerfilAdmin />,
   },
 ];

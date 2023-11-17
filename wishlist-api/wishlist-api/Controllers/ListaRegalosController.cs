@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wishlist_api.Models;
 using Microsoft.AspNetCore.Authorization;
+using wishlist_api.ViewModels;
 
 namespace wishlist_api.Controllers
 {
@@ -40,18 +41,32 @@ namespace wishlist_api.Controllers
                     .Include(x => x.LisRegUsuario!.UsuRolNavigation)
                     .Include(x => x.LisRegLisPriv)
                     .Where(lista => lista.LisRegUsuarioId == userId)
+                    .Select(lista => new ListaRegaloViewModel 
+                    {
+                        LisRegId = lista.LisRegId,
+                        LisRegNombre = lista.LisRegNombre,
+                        LisRegFecCreacion = lista.LisRegFecCreacion,
+                        LisRegUsuarioId = lista.LisRegUsuarioId,
+                        LisRegUsuario = lista.LisRegUsuario.UsuNombre,
+                        LisRegUsuarioApellido = lista.LisRegUsuario.UsuApellidos,
+                        LisRegUsuarioRolId = lista.LisRegUsuario.UsuRol,
+                        LisRegUsuarioRol = lista.LisRegUsuario.UsuRolNavigation.RolNombre,
+                        LisRegLisPrivId = lista.LisRegLisPrivId,
+                        LisRegLisPriv = lista.LisRegLisPriv.LisPrivPrivacidad,
+                        LisRegEstatus = lista.LisRegEstatus
+                    })
                     .ToListAsync();
 
                 // Configura las opciones de serialización para manejar referencias circulares
-                var options = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                    MaxDepth = 64, // Ajusta según sea necesario para la profundidad de tu objeto
+                //var options = new JsonSerializerOptions
+                //{
+                //    ReferenceHandler = ReferenceHandler.Preserve,
+                //    MaxDepth = 10, // Ajusta según sea necesario para la profundidad de tu objeto
 
-                };
+                //};
 
                 // Serializa los datos utilizando las opciones configuradas
-                var jsonResult = JsonSerializer.Serialize(listaRegalos, options);
+                var jsonResult = JsonSerializer.Serialize(listaRegalos);
 
                 // Devuelve el resultado serializado
                 return Content(jsonResult, "application/json");

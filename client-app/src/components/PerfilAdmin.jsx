@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import { MyContext } from '../App';
-import { useNavigate } from 'react-router-dom';
-import { BiSolidUserCircle } from 'react-icons/bi';
+import React, { useEffect, useState, useContext } from "react";
+import { jwtDecode } from "jwt-decode";
+import { MyContext } from "../App";
+import { useNavigate } from "react-router-dom";
+import { BiSolidUserCircle } from "react-icons/bi";
 
 const PerfilAdmin = () => {
   const [user, setUser] = useState(null);
@@ -15,7 +15,7 @@ const PerfilAdmin = () => {
 
   useEffect(() => {
     // Obtiene el token del localStorage
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     setcurrentToken(token);
 
     if (token) {
@@ -31,51 +31,41 @@ const PerfilAdmin = () => {
   useEffect(() => {
     const fetchListasRegalos = async () => {
       try {
-        console.log('Fetching Listas Regalos...');
-        
-        // Verificaciones para asegurarse de que user y user['UserId'] estén definidos
-        if (!user || !user['UserId']) {
-          console.error('UserId no está definido.');
-          return;
-        }
-  
-        console.log('UserId:', user['UserId']);
-        console.log('Token:', currentToken);
-  
+        console.log("Fetching Listas Regalos...");
+        console.log("API URL:", process.env.WISHLIST_API);
+        console.log("UserId:", user["UserId"]);
+        console.log("Token:", currentToken);
+
         const response = await fetch(
-          `http://localhost:5109/api/listaRegalos/${user['UserId']}`,
+          "http://localhost:5109/api/listaRegalos/" + user["UserId"],
           {
-            method: 'GET',
+            method: "GET",
             headers: {
               Authorization: `Bearer ${currentToken}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
-  
+
         if (response.ok) {
           const lists = await response.json();
           setListasRegalos(lists);
           // console.log(response);
           // console.log(lists);
-          const values = lists.$values;
+          const values = lists;
           values.forEach((item) => {
             // Aquí puedes hacer algo con cada elemento dentro de $values
             console.log(item);
           });
         } else {
-          // console.error(
-          //   'Error en la solicitud:',
-          //   response.status,
-          //   response.statusText
-          // );
           const responseBody = await response.text();
-          console.error('Cuerpo de la respuesta:', responseBody);  }
+          console.error("Cuerpo de la respuesta:", responseBody);
+        }
       } catch (error) {
-        console.error('Error en la solicitud:', error);
+        console.error("Error en la solicitud:", error);
       }
     };
-  
+
     fetchListasRegalos();
   }, [user, currentToken]);
 
@@ -97,11 +87,11 @@ const PerfilAdmin = () => {
                     <BiSolidUserCircle />
                   </h1>
                   <p className="m-0 fs-4">
-                    {'   '}
-                    Admin{' '}
+                    {"   "}
+                    Admin{" "}
                     {
                       user[
-                        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+                        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
                       ]
                     }
                     !
@@ -128,9 +118,8 @@ const PerfilAdmin = () => {
                 {/* Lista 1 */}
 
                 {listasRegalos &&
-                  listasRegalos.$values &&
-                  listasRegalos.$values.map((listaRegalos) => (
-                    <div className="col-6 mb-2" key={listaRegalos.lisRegId}>
+                  listasRegalos.map((listaRegalos) => (
+                    <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
                       <div className="card">
                         <div className="card-body">
                           <h5 className="card-title">

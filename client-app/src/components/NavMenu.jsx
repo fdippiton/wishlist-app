@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from "react";
 import {
   Collapse,
   Navbar,
@@ -6,12 +6,12 @@ import {
   NavbarToggler,
   NavItem,
   NavLink,
-} from 'reactstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import './NavMenu.css';
-import { MyContext } from '../App';
-import { jwtDecode } from 'jwt-decode';
-import { BiSolidUserCircle } from 'react-icons/bi';
+} from "reactstrap";
+import { Link, useNavigate } from "react-router-dom";
+import "./NavMenu.css";
+import { MyContext } from "../App";
+import { jwtDecode } from "jwt-decode";
+import { BiSolidUserCircle } from "react-icons/bi";
 
 export function NavMenu() {
   const [collapsed, setCollapsed] = useState(true);
@@ -26,48 +26,38 @@ export function NavMenu() {
 
   const handleLogout = () => {
     setAuthenticated(false);
-    localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
-    // setUser('');
-    navigate('/');
+    setRol(null);
+    setUser(null);
+    localStorage.removeItem("accessToken"); // Elimina el token del almacenamiento local al cerrar sesión
+    navigate("/");
   };
 
   useEffect(() => {
-    // Definir una función asincrónica dentro de useEffect
-    const obtenerDatosAsync = async () => {
-      // Obtiene el token del localStorage
-      const token = localStorage.getItem('accessToken');
+    // Obtiene el token del localStorage
+    const token = localStorage.getItem("accessToken");
 
-      if (token) {
-        try {
-          // Decodifica el token
-          const decoded = jwtDecode(token);
+    if (token) {
+      // Decodifica el token
+      const decoded = jwtDecode(token);
 
-          // Guarda la información del usuario en el estado
-          setUser(decoded);
-          console.log(decoded);
-
-          if (
-            decoded[
-              'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-            ] === '1'
-          ) {
-            setRol(1);
-          }
-        } catch (error) {
-          console.error('Error al decodificar el token:', error);
-        }
+      // Guarda la información del usuario en el estado
+      setUser(decoded);
+      console.log(decoded);
+      if (
+        decoded[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ] === "1"
+      ) {
+        setRol(1);
       }
-    };
-
-    // Llama a la función asincrónica
-    obtenerDatosAsync();
+    }
   }, [authenticated]);
 
   return (
     <>
-      {authenticated ? (
+      {authenticated && user ? (
         <header>
-          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 d-flex">
+          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3">
             <NavbarBrand tag={Link} to="/">
               Wishlist
             </NavbarBrand>
@@ -82,7 +72,7 @@ export function NavMenu() {
                     <p className="m-0 fs-6">
                       {
                         user[
-                          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+                          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
                         ]
                       }
                     </p>
@@ -103,7 +93,7 @@ export function NavMenu() {
                     <p className="m-0 fs-6">
                       {
                         user[
-                          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+                          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
                         ]
                       }
                     </p>
@@ -117,6 +107,7 @@ export function NavMenu() {
                 </>
               )}
             </div>
+            <div className="col-2"></div>
           </Navbar>
         </header>
       ) : (

@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Signin = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
-    UsuCorreo: '',
-    UsuContrasena: '',
+    UsuCorreo: "",
+    UsuContrasena: "",
   });
 
   const handleInputChange = (e) => {
@@ -18,40 +18,39 @@ const Signin = ({ onLogin }) => {
 
   const handleLoginButtonClick = async () => {
     try {
-      const response = await fetch('http://localhost:5109/api/Login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5109/api/Login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(loginData),
       });
 
       if (response.ok) {
         const token = await response.text();
-        console.log('Inicio de sesión exitoso. Token:', token);
-        localStorage.setItem('accessToken', token); // Almacena el token en localStorage
+        console.log("Inicio de sesión exitoso. Token:", token);
+        localStorage.setItem("accessToken", token); // Almacena el token en localStorage
         onLogin();
+        console.log(onLogin());
 
         const decoded = jwtDecode(token);
         console.log(decoded);
-
         if (
-          decoded &&
           decoded[
-            'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-          ] === '1'
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ] === "1"
         ) {
-          navigate('/perfilAdmin');
+          navigate("/perfilAdmin");
         } else {
-          navigate('/perfilUsuario');
+          navigate("/perfilUsuario");
         }
         // Llama a la función proporcionada para manejar el inicio de sesión en el componente padre
       } else {
-        console.error('Error al iniciar sesión');
+        console.error("Error al iniciar sesión");
         // Maneja los errores del servidor
       }
     } catch (error) {
-      console.error('Error en la solicitud:', error);
+      console.error("Error en la solicitud:", error);
     }
   };
 
@@ -103,7 +102,7 @@ const Signin = ({ onLogin }) => {
           </div>
 
           <div className="d-flex justify-content-center mt-3">
-            <span>&iquest;No tienes una cuenta?&nbsp; </span>{' '}
+            <span>&iquest;No tienes una cuenta?&nbsp; </span>{" "}
             <Link className="text-dark text-decoration-none" to="/signup">
               <b className="text-primary"> Registrate</b>
             </Link>
