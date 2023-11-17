@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { MyContext } from "../App";
 
-const Signin = ({ onLogin }) => {
+const Signin = () => {
   const navigate = useNavigate();
+  const { handleLogin } = useContext(MyContext);
 
   const [loginData, setLoginData] = useState({
     UsuCorreo: "",
@@ -28,13 +29,11 @@ const Signin = ({ onLogin }) => {
 
       if (response.ok) {
         const token = await response.text();
+
         console.log("Inicio de sesión exitoso. Token:", token);
-        localStorage.setItem("accessToken", token); // Almacena el token en localStorage
-        onLogin();
-        console.log(onLogin());
+        handleLogin(token); // Almacena el token en localStorage
 
         const decoded = jwtDecode(token);
-        console.log(decoded);
         if (
           decoded[
             "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"

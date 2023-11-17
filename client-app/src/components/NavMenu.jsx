@@ -14,130 +14,88 @@ import { jwtDecode } from "jwt-decode";
 import { BiSolidUserCircle } from "react-icons/bi";
 
 export function NavMenu() {
-  const [collapsed, setCollapsed] = useState(true);
-  const [user, setUser] = useState(null);
+  const { authenticated, user, handleLogout } = useContext(MyContext);
   const navigate = useNavigate();
-  const { authenticated, setAuthenticated } = useContext(MyContext);
-  const [rol, setRol] = useState(null);
 
-  const toggleNavbar = () => {
-    setCollapsed(!collapsed);
+  const handleLogoutClick = () => {
+    handleLogout();
+    navigate("/signin");
   };
 
-  const handleLogout = () => {
-    setAuthenticated(false);
-    setRol(null);
-    setUser(null);
-    localStorage.removeItem("accessToken"); // Elimina el token del almacenamiento local al cerrar sesión
-    navigate("/");
-  };
+  // useEffect(() => {
+  //   // Obtiene el token del localStorage
+  //   const token = localStorage.getItem("accessToken");
 
-  useEffect(() => {
-    // Obtiene el token del localStorage
-    const token = localStorage.getItem("accessToken");
+  //   if (token) {
+  //     // Decodifica el token
+  //     const decoded = jwtDecode(token);
 
-    if (token) {
-      // Decodifica el token
-      const decoded = jwtDecode(token);
+  //     // Guarda tl token decodificado
+  //     setUser(decoded);
+  //     console.log(decoded);
 
-      // Guarda la información del usuario en el estado
-      setUser(decoded);
-      console.log(decoded);
-      if (
-        decoded[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ] === "1"
-      ) {
-        setRol(1);
-      }
-    }
-  }, [authenticated]);
+  //     if (
+  //       decoded[
+  //         "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+  //       ] === "1"
+  //     ) {
+  //       // Establecer el rol de usuario
+  //       setRol(1);
+  //     }
+  //   }
+  // }, [authenticated]);
 
   return (
-    <>
-      {authenticated && user ? (
-        <header>
-          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3">
-            <NavbarBrand tag={Link} to="/">
-              Wishlist
-            </NavbarBrand>
-
-            <div className="col-3 d-flex align-items-center justify-content-end">
-              <h1 className="m-0 pe-2">
-                <BiSolidUserCircle />
-              </h1>
-              {rol === 1 ? (
-                <>
-                  <Link to="/perfilAdmin" className="text-decoration-none me-3">
-                    <p className="m-0 fs-6">
-                      {
-                        user[
-                          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-                        ]
-                      }
-                    </p>
+    <nav className="navbar navbar-expand navbar-light bg-light">
+      <div className="container">
+        <Link className="navbar-brand" to="/">
+          Wishlist
+        </Link>
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav ms-auto">
+            {authenticated ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/perfilUsuario">
+                    Perfil Usuario
                   </Link>
+                </li>
+                {user &&
+                  user[
+                    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                  ] === "1" && (
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/perfilAdmin">
+                        Perfil Admin
+                      </Link>
+                    </li>
+                  )}
+                <li className="nav-item">
                   <button
-                    className="btn btn-outline-danger"
-                    onClick={handleLogout}
+                    className="btn btn-link nav-link"
+                    onClick={handleLogoutClick}
                   >
                     Cerrar Sesión
                   </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/perfilUsuario"
-                    className="text-decoration-none me-3"
-                  >
-                    <p className="m-0 fs-6">
-                      {
-                        user[
-                          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-                        ]
-                      }
-                    </p>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/signin">
+                    Iniciar Sesión
                   </Link>
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={handleLogout}
-                  >
-                    Cerrar Sesión
-                  </button>
-                </>
-              )}
-            </div>
-            <div className="col-2"></div>
-          </Navbar>
-        </header>
-      ) : (
-        <header>
-          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3">
-            <NavbarBrand tag={Link} to="/">
-              Wishlist
-            </NavbarBrand>
-            <NavbarToggler onClick={toggleNavbar} className="mr-2" />
-            <Collapse
-              className="d-sm-inline-flex flex-sm-row-reverse"
-              isOpen={!collapsed}
-              navbar
-            >
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/signup">
-                    Registrate
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/signin">
-                    Iniciar sesi&oacute;n
-                  </NavLink>
-                </NavItem>
-              </ul>
-            </Collapse>
-          </Navbar>
-        </header>
-      )}
-    </>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/signup">
+                    Registrarse
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }

@@ -5,67 +5,93 @@ import { useNavigate } from "react-router-dom";
 import { BiSolidUserCircle } from "react-icons/bi";
 
 const PerfilUsuario = () => {
-  const [user, setUser] = useState(null);
-  const [currentToken, setcurrentToken] = useState(null);
-  const [listasRegalos, setListasRegalos] = useState([]);
+  const [listasRegalos, setListasRegalos] = useState(null);
+  const { user, authenticated, handleLogout } = useContext(MyContext);
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-  const { authenticated, setAuthenticated } = useContext(MyContext);
 
   useEffect(() => {
-    // Obtiene el token del localStorage
-    const token = localStorage.getItem("accessToken");
-    setcurrentToken(token);
-
-    if (token) {
-      // Decodifica el token
-      const decoded = jwtDecode(token);
-
-      // Guarda la información del usuario en el estado
-      setUser(decoded);
-      console.log(decoded);
+    if (!authenticated) {
+      // Redirect to login if not authenticated
+      navigate("/signin");
     }
-  }, []);
+  }, [authenticated, navigate]);
+
+  // useEffect(() => {
+  //   const fetchListasRegalos = async () => {
+  //     try {
+  //       console.log("Fetching Listas Regalos...");
+  //       console.log("API URL:", process.env.WISHLIST_API);
+  //       console.log("UserId:", user["UserId"]);
+  //       console.log("Token:", currentToken);
+
+  //       const response = await fetch(
+  //         "http://localhost:5109/api/listaRegalos/" + user["UserId"],
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             Authorization: `Bearer ${currentToken}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+
+  //       if (response.ok) {
+  //         const lists = await response.json();
+  //         setListasRegalos(lists);
+  //         // console.log(response);
+  //         // console.log(lists);
+  //         const values = lists;
+  //         values.forEach((item) => {
+  //           // Aquí puedes hacer algo con cada elemento dentro de $values
+  //           console.log(item);
+  //         });
+  //       } else {
+  //         const responseBody = await response.text();
+  //         console.error("Cuerpo de la respuesta:", responseBody);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error en la solicitud:", error);
+  //     }
+  //   };
+
+  //   fetchListasRegalos();
+  // }, [user, currentToken]);
 
   useEffect(() => {
-    const fetchListasRegalos = async () => {
-      try {
-        console.log("Fetching Listas Regalos...");
-        console.log("API URL:", process.env.WISHLIST_API);
-        console.log("UserId:", user["UserId"]);
-        console.log("Token:", currentToken);
+    if (authenticated) {
+      // Fetch user-specific data using user.UserId and token
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5109/api/listaRegalos/${user.UserId}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          );
 
-        const response = await fetch(
-          "http://localhost:5109/api/listaRegalos/" + user["UserId"],
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${currentToken}`,
-              "Content-Type": "application/json",
-            },
+          if (response.ok) {
+            const data = await response.json();
+            setListasRegalos(data);
+
+            listasRegalos.forEach((item) => {
+              // Aquí puedes hacer algo con cada elemento dentro de $values
+              console.log(item);
+            });
+          } else {
+            console.error("Error fetching user data");
           }
-        );
-
-        if (response.ok) {
-          const lists = await response.json();
-          setListasRegalos(lists);
-          // console.log(response);
-          // console.log(lists);
-          const values = lists;
-          values.forEach((item) => {
-            // Aquí puedes hacer algo con cada elemento dentro de $values
-            console.log(item);
-          });
-        } else {
-          const responseBody = await response.text();
-          console.error("Cuerpo de la respuesta:", responseBody);
+        } catch (error) {
+          console.error("Error in request:", error);
         }
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-      }
-    };
+      };
 
-    fetchListasRegalos();
-  }, [user, currentToken]);
+      fetchUserData();
+    }
+  }, [user, authenticated]);
 
   // const handleLogout = () => {
   //   setAuthenticated(false);
@@ -77,7 +103,7 @@ const PerfilUsuario = () => {
     <div className="container mt-3">
       <div className="row">
         <div>
-          {user ? (
+          {authenticated && user ? (
             <div>
               <div className="row d-flex justify-content-between mt-3">
                 <div className="col-4 d-flex align-items-center">
