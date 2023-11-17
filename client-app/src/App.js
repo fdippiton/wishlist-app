@@ -12,10 +12,13 @@ import { CrearListaRegalos } from './components/CrearListaRegalos';
 import { jwtDecode } from 'jwt-decode';
 
 export const MyContext = createContext();
+// const handleLogout = () => {
+//   setAuthenticated(false);
+//   localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
+//   history.push('/');
+// };
 
 const App = () => {
-  // static displayName = App.name;
-
   const [authenticated, setAuthenticated] = useState(false);
   const [rol, setRol] = useState(null);
 
@@ -23,26 +26,28 @@ const App = () => {
     setAuthenticated(true);
   };
 
-  // const handleLogout = () => {
-  //   setAuthenticated(false);
-  //   localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
-  //   history.push('/');
-  // };
-
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    if (token) {
-      setAuthenticated(true);
-    }
 
-    const decoded = jwtDecode(token);
-    console.log(decoded);
-    if (
-      decoded[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ] === '1'
-    ) {
-      setRol(1);
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log(decoded);
+
+        if (
+          decoded &&
+          decoded[
+            'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+          ] === '1'
+        ) {
+          setRol('1'); // Asegúrate de usar una cadena aquí
+        } 
+
+        setAuthenticated(true);
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+        // Manejar el error al decodificar el token
+      }
     }
   }, []);
 
@@ -55,7 +60,7 @@ const App = () => {
           <Route path="/" element={<Home />}></Route>
           <Route
             path="/signin"
-            element={<Signin onLogin={handleLogin} />} // Pass the handleLogin prop
+            element={<Signin onLogin={handleLogin} />}
           ></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route
@@ -63,13 +68,15 @@ const App = () => {
             element={<CrearListaRegalos />}
           ></Route>
 
-          {authenticated ? (
-            rol === 1 ? (
-              <Route path="/perfilAdmin" element={<PerfilAdmin />} />
-            ) : (
-              <Route path="/perfilUsuario" element={<PerfilUsuario />} />
-            )
-          ) : (
+          {authenticated && rol === '1' && (
+            <Route path="/perfilAdmin" element={<PerfilAdmin />} />
+          )}
+
+          {authenticated && rol !== '1' && (
+            <Route path="/perfilUsuario" element={<PerfilUsuario />} />
+          )}
+
+          {!authenticated && (
             <>
               <Route
                 path="/signup"

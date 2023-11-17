@@ -3,6 +3,7 @@ import { Signup } from './components/Signup';
 import Signin from './components/Signin';
 import PerfilUsuario from './components/PerfilUsuario';
 import { CrearListaRegalos } from './components/CrearListaRegalos';
+import PerfilAdmin from './components/PerfilAdmin';
 
 const AppRoutes = [
   {
@@ -22,8 +23,12 @@ const AppRoutes = [
     element: <CrearListaRegalos />,
   },
   {
-    path: '/PerfilUsuario',
+    path: '/perfilUsuario',
     element: <PerfilUsuario />,
+  },
+  {
+    path: '/perfilAdmin',
+    element: <PerfilAdmin />,
   },
 ];
 

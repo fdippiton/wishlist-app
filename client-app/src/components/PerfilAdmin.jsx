@@ -32,12 +32,18 @@ const PerfilAdmin = () => {
     const fetchListasRegalos = async () => {
       try {
         console.log('Fetching Listas Regalos...');
-        console.log('API URL:', process.env.WISHLIST_API);
+        
+        // Verificaciones para asegurarse de que user y user['UserId'] estén definidos
+        if (!user || !user['UserId']) {
+          console.error('UserId no está definido.');
+          return;
+        }
+  
         console.log('UserId:', user['UserId']);
         console.log('Token:', currentToken);
-
+  
         const response = await fetch(
-          'http://localhost:5109/api/listaRegalos/' + user['UserId'],
+          `http://localhost:5109/api/listaRegalos/${user['UserId']}`,
           {
             method: 'GET',
             headers: {
@@ -46,7 +52,7 @@ const PerfilAdmin = () => {
             },
           }
         );
-
+  
         if (response.ok) {
           const lists = await response.json();
           setListasRegalos(lists);
@@ -64,13 +70,12 @@ const PerfilAdmin = () => {
           //   response.statusText
           // );
           const responseBody = await response.text();
-          console.error('Cuerpo de la respuesta:', responseBody);
-        }
+          console.error('Cuerpo de la respuesta:', responseBody);  }
       } catch (error) {
         console.error('Error en la solicitud:', error);
       }
     };
-
+  
     fetchListasRegalos();
   }, [user, currentToken]);
 
@@ -125,7 +130,7 @@ const PerfilAdmin = () => {
                 {listasRegalos &&
                   listasRegalos.$values &&
                   listasRegalos.$values.map((listaRegalos) => (
-                    <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
+                    <div className="col-6 mb-2" key={listaRegalos.lisRegId}>
                       <div className="card">
                         <div className="card-body">
                           <h5 className="card-title">

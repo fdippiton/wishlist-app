@@ -34,14 +34,16 @@ const Signin = ({ onLogin }) => {
 
         const decoded = jwtDecode(token);
         console.log(decoded);
+
         if (
+          decoded &&
           decoded[
             'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
           ] === '1'
         ) {
-          navigate('/PerfilAdmin');
+          navigate('/perfilAdmin');
         } else {
-          navigate('/PerfilUsuario');
+          navigate('/perfilUsuario');
         }
         // Llama a la función proporcionada para manejar el inicio de sesión en el componente padre
       } else {

@@ -27,35 +27,47 @@ export function NavMenu() {
   const handleLogout = () => {
     setAuthenticated(false);
     localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
+    // setUser('');
     navigate('/');
   };
 
   useEffect(() => {
-    // Obtiene el token del localStorage
-    const token = localStorage.getItem('accessToken');
+    // Definir una función asincrónica dentro de useEffect
+    const obtenerDatosAsync = async () => {
+      // Obtiene el token del localStorage
+      const token = localStorage.getItem('accessToken');
 
-    if (token) {
-      // Decodifica el token
-      const decoded = jwtDecode(token);
+      if (token) {
+        try {
+          // Decodifica el token
+          const decoded = jwtDecode(token);
 
-      // Guarda la información del usuario en el estado
-      setUser(decoded);
-      console.log(decoded);
-      if (
-        decoded[
-          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        ] === '1'
-      ) {
-        setRol(1);
+          // Guarda la información del usuario en el estado
+          setUser(decoded);
+          console.log(decoded);
+
+          if (
+            decoded[
+              'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+            ] === '1'
+          ) {
+            setRol(1);
+          }
+        } catch (error) {
+          console.error('Error al decodificar el token:', error);
+        }
       }
-    }
+    };
+
+    // Llama a la función asincrónica
+    obtenerDatosAsync();
   }, [authenticated]);
 
   return (
     <>
       {authenticated ? (
         <header>
-          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3">
+          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 d-flex">
             <NavbarBrand tag={Link} to="/">
               Wishlist
             </NavbarBrand>
@@ -105,7 +117,6 @@ export function NavMenu() {
                 </>
               )}
             </div>
-            <div className="col-2"></div>
           </Navbar>
         </header>
       ) : (
