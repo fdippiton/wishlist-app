@@ -22,29 +22,6 @@ export function NavMenu() {
     navigate("/signin");
   };
 
-  // useEffect(() => {
-  //   // Obtiene el token del localStorage
-  //   const token = localStorage.getItem("accessToken");
-
-  //   if (token) {
-  //     // Decodifica el token
-  //     const decoded = jwtDecode(token);
-
-  //     // Guarda tl token decodificado
-  //     setUser(decoded);
-  //     console.log(decoded);
-
-  //     if (
-  //       decoded[
-  //         "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-  //       ] === "1"
-  //     ) {
-  //       // Establecer el rol de usuario
-  //       setRol(1);
-  //     }
-  //   }
-  // }, [authenticated]);
-
   return (
     <nav className="navbar navbar-expand navbar-light bg-light">
       <div className="container">

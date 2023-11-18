@@ -17,47 +17,6 @@ const PerfilUsuario = () => {
     }
   }, [authenticated, navigate]);
 
-  // useEffect(() => {
-  //   const fetchListasRegalos = async () => {
-  //     try {
-  //       console.log("Fetching Listas Regalos...");
-  //       console.log("API URL:", process.env.WISHLIST_API);
-  //       console.log("UserId:", user["UserId"]);
-  //       console.log("Token:", currentToken);
-
-  //       const response = await fetch(
-  //         "http://localhost:5109/api/listaRegalos/" + user["UserId"],
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${currentToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-
-  //       if (response.ok) {
-  //         const lists = await response.json();
-  //         setListasRegalos(lists);
-  //         // console.log(response);
-  //         // console.log(lists);
-  //         const values = lists;
-  //         values.forEach((item) => {
-  //           // Aquí puedes hacer algo con cada elemento dentro de $values
-  //           console.log(item);
-  //         });
-  //       } else {
-  //         const responseBody = await response.text();
-  //         console.error("Cuerpo de la respuesta:", responseBody);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error en la solicitud:", error);
-  //     }
-  //   };
-
-  //   fetchListasRegalos();
-  // }, [user, currentToken]);
-
   useEffect(() => {
     if (authenticated) {
       // Fetch user-specific data using user.UserId and token
@@ -92,12 +51,6 @@ const PerfilUsuario = () => {
       fetchUserData();
     }
   }, [user, authenticated]);
-
-  // const handleLogout = () => {
-  //   setAuthenticated(false);
-  //   localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
-  //   navigate('/');
-  // };
 
   return (
     <div className="container mt-3">

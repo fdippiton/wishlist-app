@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { BiSolidUserCircle } from "react-icons/bi";
 
 const PerfilAdmin = ({ rol }) => {
-  // const [user, setUser] = useState(null);
   const [adminData, setAdminData] = useState(null);
   const [listasRegalos, setListasRegalos] = useState([]);
   const navigate = useNavigate();
@@ -17,66 +16,6 @@ const PerfilAdmin = ({ rol }) => {
       navigate("/signin");
     }
   }, [authenticated, navigate]);
-
-  // useEffect(() => {
-  //   // Obtiene el token del localStorage
-  //   const token = localStorage.getItem("accessToken");
-  //   setcurrentToken(token);
-
-  //   if (!token || rol !== 1) {
-  //     setAuthenticated(false);
-  //     navigate("/");
-  //   } else {
-  //     // Decodifica el token
-  //     const decoded = jwtDecode(token);
-
-  //     // Guarda la información del usuario en el estado
-  //     setUser(decoded);
-  //     console.log(decoded);
-  //   }
-  // }, [rol]);
-
-  // useEffect(() => {
-  //   const fetchListasRegalos = async () => {
-  //     try {
-  //       console.log("Fetching Listas Regalos...");
-  //       console.log("API URL:", process.env.WISHLIST_API);
-  //       console.log("UserId:", user["UserId"]);
-  //       console.log("Token:", currentToken);
-
-  //       const response = await fetch(
-  //         "http://localhost:5109/api/listaRegalos/" + user["UserId"],
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${currentToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-
-  //       if (response.ok) {
-  //         const lists = await response.json();
-  //         setListasRegalos(lists);
-  //         // console.log(response);
-  //         // console.log(lists);
-  //         const values = lists;
-  //         values.forEach((item) => {
-  //           // Aquí puedes hacer algo con cada elemento dentro de $values
-  //           console.log(item);
-  //         });
-  //         console.log("Autenticathed " + authenticated);
-  //       } else {
-  //         const responseBody = await response.text();
-  //         console.error("Cuerpo de la respuesta:", responseBody);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error en la solicitud:", error);
-  //     }
-  //   };
-
-  //   fetchListasRegalos();
-  // }, [user, currentToken]);
 
   useEffect(() => {
     if (authenticated) {
@@ -112,12 +51,6 @@ const PerfilAdmin = ({ rol }) => {
       fetchAdminData();
     }
   }, [user, authenticated]);
-
-  //   const handleLogout = () => {
-  //     setAuthenticated(false);
-  //     localStorage.removeItem('accessToken'); // Elimina el token del almacenamiento local al cerrar sesión
-  //     navigate('/');
-  //   };
 
   return (
     <div className="container mt-3">

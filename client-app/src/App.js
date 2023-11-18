@@ -40,61 +40,7 @@ const App = () => {
     localStorage.removeItem("accessToken");
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("accessToken");
-  //   if (token) {
-  //     const decoded = jwtDecode(token);
-  //     console.log(decoded);
-  //     if (
-  //       decoded[
-  //         "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-  //       ] === "1"
-  //     ) {
-  //       setRol(1);
-  //     }
-  //     setAuthenticated(true);
-  //   }
-  // }, []);
-
   return (
-    // <MyContext.Provider value={{ authenticated, setAuthenticated, rol }}>
-    //   <BrowserRouter>
-    //     <Layout />
-
-    //     <Routes>
-    //       <Route path="/" element={<Home />}></Route>
-    //       <Route
-    //         path="/signin"
-    //         element={<Signin onLogin={handleLogin} />} // Pass the handleLogin prop
-    //       ></Route>
-    //       <Route path="/signup" element={<Signup />}></Route>
-    //       <Route
-    //         path="/crearListaRegalos"
-    //         element={<CrearListaRegalos />}
-    //       ></Route>
-
-    //       {authenticated ? (
-    //         rol === 1 ? (
-    //           <Route path="/perfilAdmin" element={<PerfilAdmin rol={rol} />} />
-    //         ) : (
-    //           <Route path="/perfilUsuario" element={<PerfilUsuario />} />
-    //         )
-    //       ) : (
-    //         <>
-    //           <Route
-    //             path="/signup"
-    //             element={<Signup onLogin={handleLogin} />}
-    //           />
-    //           <Route
-    //             path="/signin"
-    //             element={<Signin onLogin={handleLogin} />}
-    //           />
-    //         </>
-    //       )}
-    //     </Routes>
-    //   </BrowserRouter>
-    // </MyContext.Provider>
-
     <MyContext.Provider
       value={{ authenticated, user, handleLogin, handleLogout }}
     >
