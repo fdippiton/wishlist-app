@@ -56,11 +56,18 @@ const Signin = () => {
   return (
     <div className="row mt-5">
       <div className="col-4 offset-4">
-        <h1 className="text-center">Iniciar sesi&oacute;n</h1>
+        <h1 className="text-center">Wishlist</h1>
+        <h6 className="text-center">
+          Inicia sesion ahora para acceder a tus listas de deseos
+        </h6>
         <form className="mt-5">
           <div>
             <div className="d-flex justify-content-start mt-3">
-              <label className="form-label" id="formEmail">
+              <label
+                className="form-label"
+                id="formEmail"
+                style={{ "font-size": "13px" }}
+              >
                 Email
               </label>
             </div>
@@ -76,7 +83,11 @@ const Signin = () => {
 
           <div>
             <div className="d-flex justify-content-start mt-3">
-              <label className="form-label" id="formPassword">
+              <label
+                className="form-label"
+                id="formPassword"
+                style={{ "font-size": "13px" }}
+              >
                 Contrase&ntilde;a
               </label>
             </div>
@@ -95,14 +106,21 @@ const Signin = () => {
               type="button"
               className="btn btn-primary"
               onClick={handleLoginButtonClick}
+              style={{ "font-size": "14px" }}
             >
               Iniciar sesi&oacute;n
             </button>
           </div>
 
           <div className="d-flex justify-content-center mt-3">
-            <span>&iquest;No tienes una cuenta?&nbsp; </span>{" "}
-            <Link className="text-dark text-decoration-none" to="/signup">
+            <span style={{ "font-size": "13px" }}>
+              &iquest;No tienes una cuenta?&nbsp;{" "}
+            </span>{" "}
+            <Link
+              className="text-dark text-decoration-none"
+              to="/signup"
+              style={{ "font-size": "13px" }}
+            >
               <b className="text-primary"> Registrate</b>
             </Link>
           </div>

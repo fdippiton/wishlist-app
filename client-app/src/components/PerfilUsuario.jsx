@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
 import { MyContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BiSolidUserCircle } from "react-icons/bi";
 
 const PerfilUsuario = () => {
@@ -60,10 +60,10 @@ const PerfilUsuario = () => {
             <div>
               <div className="row d-flex justify-content-between mt-3">
                 <div className="col-4 d-flex align-items-center">
-                  <h1 className="m-0 pe-2">
-                    <BiSolidUserCircle />
-                  </h1>
-                  <p className="m-0 fs-4">
+                  <BiSolidUserCircle
+                    style={{ width: "50px", height: "50px" }}
+                  />
+                  <p className="m-0 fs-5">
                     {"   "}
                     Bienvenid@,{" "}
                     {
@@ -86,7 +86,7 @@ const PerfilUsuario = () => {
               </div> */}
 
                 <div className="mt-3">
-                  <p className="fs-3">Mis listas de deseos</p>
+                  <p className="fs-6">Mis listas de deseos</p>
                 </div>
 
                 <div className="row d-flex flex-column">
@@ -99,16 +99,21 @@ const PerfilUsuario = () => {
                       <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
                         <div className="card">
                           <div className="card-body">
-                            <h5 className="card-title">
+                            <h6 className="card-title">
                               {listaRegalos.LisRegNombre}
-                            </h5>
+                            </h6>
                             <p className="card-text">
                               {listaRegalos.LisRegLisPriv &&
                                 listaRegalos.LisRegLisPriv.LisPrivPrivacidad}
                             </p>
-                            <a href="/" className="btn btn-outline-primary">
+
+                            <Link
+                              className="btn btn-outline-primary"
+                              to={`/listaDeseos/${listaRegalos.LisRegId}`}
+                              style={{ "font-size": "13px" }}
+                            >
                               Ver articulos
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </div>

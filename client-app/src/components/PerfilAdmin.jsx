@@ -60,10 +60,11 @@ const PerfilAdmin = ({ rol }) => {
             <div>
               <div className="row d-flex justify-content-between mt-3">
                 <div className="col-4 d-flex align-items-center">
-                  <h1 className="m-0 pe-2">
-                    <BiSolidUserCircle />
-                  </h1>
-                  <p className="m-0 fs-4">
+                  <BiSolidUserCircle
+                    style={{ width: "50px", height: "50px" }}
+                  />
+
+                  <p className="m-0 fs-5">
                     {"   "}
                     Admin{" "}
                     {
@@ -71,22 +72,12 @@ const PerfilAdmin = ({ rol }) => {
                         "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
                       ]
                     }
-                    !
                   </p>
                 </div>
-
-                {/* <div className="col-2">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={handleLogout}
-                  >
-                    Cerrar Sesión
-                  </button>
-                </div> */}
               </div>
 
               <div className="mt-3">
-                <p className="fs-3">Admin</p>
+                <p className="fs-6">Listas de deseos de los usuarios</p>
               </div>
 
               <div className="row d-flex flex-column">
@@ -99,38 +90,30 @@ const PerfilAdmin = ({ rol }) => {
                     <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
                       <div className="card">
                         <div className="card-body">
-                          <h5 className="card-title">
+                          <h6 className="card-title">
                             {listaRegalos.LisRegNombre}
-                          </h5>
+                          </h6>
+                          <h6
+                            className="card-title"
+                            style={{ fontSize: "13px" }}
+                          >
+                            Hecha por {listaRegalos.LisRegUsuario}
+                          </h6>
                           <p className="card-text">
                             {listaRegalos.LisRegLisPriv &&
                               listaRegalos.LisRegLisPriv.LisPrivPrivacidad}
                           </p>
-                          <a href="/" className="btn btn-outline-primary">
+                          <a
+                            href="/"
+                            className="btn btn-outline-primary btn-sm"
+                          >
                             Ver articulos
                           </a>
                         </div>
                       </div>
                     </div>
                   ))}
-
-                {/* Lista 2 */}
-                {/* <div className="col-6 mb-2">
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title">Special list</h5>
-                      <p className="card-text">
-                        With supporting text below as a natural lead-in to
-                        additional content.
-                      </p>
-                      <a href="/" className="btn btn-primary">
-                        Ver articulos
-                      </a>
-                    </div>
-                  </div>
-                </div> */}
               </div>
-              {/* Renderiza el resto de la interfaz de usuario */}
             </div>
           ) : (
             <p>No has iniciado sesión.</p>

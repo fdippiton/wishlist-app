@@ -25,7 +25,7 @@ export function NavMenu() {
   return (
     <nav className="navbar navbar-expand navbar-light bg-light">
       <div className="container">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand" to="/" style={{ "font-size": "25px" }}>
           Wishlist
         </Link>
         <div className="collapse navbar-collapse">
@@ -33,8 +33,12 @@ export function NavMenu() {
             {authenticated ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/perfilUsuario">
-                    Perfil Usuario
+                  <Link
+                    className="nav-link"
+                    to="/perfilUsuario"
+                    style={{ "font-size": "15px" }}
+                  >
+                    Dashboard
                   </Link>
                 </li>
                 {user &&
@@ -42,15 +46,20 @@ export function NavMenu() {
                     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                   ] === "1" && (
                     <li className="nav-item">
-                      <Link className="nav-link" to="/perfilAdmin">
+                      <Link
+                        className="nav-link"
+                        to="/perfilAdmin"
+                        style={{ "font-size": "15px" }}
+                      >
                         Perfil Admin
                       </Link>
                     </li>
                   )}
                 <li className="nav-item">
                   <button
-                    className="btn btn-link nav-link"
+                    className="btn btn-link nav-link text-danger"
                     onClick={handleLogoutClick}
+                    style={{ "font-size": "15px" }}
                   >
                     Cerrar Sesión
                   </button>
@@ -60,7 +69,7 @@ export function NavMenu() {
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/signin">
-                    Iniciar Sesión
+                    Iniciar sesión
                   </Link>
                 </li>
                 <li className="nav-item">

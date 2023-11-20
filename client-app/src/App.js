@@ -11,6 +11,8 @@ import { BrowserRouter } from "react-router-dom";
 import { CrearListaRegalos } from "./components/CrearListaRegalos";
 import { jwtDecode } from "jwt-decode";
 import { NavMenu } from "./components/NavMenu";
+import { Footer } from "./components/Footer";
+import { ListaRegalos } from "./components/ListaRegalos";
 
 export const MyContext = createContext();
 
@@ -53,7 +55,9 @@ const App = () => {
             <Route path="/signin" element={<Signin />} />
             <Route path="/perfilUsuario" element={<PerfilUsuario />} />
             <Route path="/perfilAdmin" element={<PerfilAdmin />} />
+            <Route path="/listaDeseos/:listaId" element={<ListaRegalos />} />
           </Routes>
+          {/* <Footer /> */}
         </Layout>
       </BrowserRouter>
     </MyContext.Provider>

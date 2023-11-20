@@ -16,7 +16,7 @@ export function Home() {
       <div className="row">
         <div className="col-6 d-flex flex-column justify-content-center">
           <h1>Encuentra el regalo perfecto para tus seres queridos!</h1>
-          <h4>
+          <h4 className="mb-4">
             Crea una lista de deseos y compartela con tus familiares y amigos.
           </h4>
           {/* <button type="submit" class="btn btn-primary" style={{ width: '200px' }}>Crear</button>*/}
@@ -25,11 +25,21 @@ export function Home() {
               className="text-dark text-decoration-none"
               to="/perfilUsuario"
             >
-              <b className="btn btn-outline-primary">Crear lista</b>
+              <b
+                className="btn btn-outline-primary"
+                style={{ "font-size": "13px" }}
+              >
+                Crear lista
+              </b>
             </Link>
           ) : (
             <Link className="text-dark text-decoration-none" to="/signup">
-              <b className="btn btn-outline-primary">Crear lista</b>
+              <b
+                className="btn btn-outline-primary"
+                style={{ "font-size": "13px" }}
+              >
+                Crear lista
+              </b>
             </Link>
           )}
         </div>
@@ -40,20 +50,30 @@ export function Home() {
 
       <div className="row d-flex justify-content-center mt-5">
         <div className="col-6">
+          {/* <h6 for="exampleInputPassword1" class="form-label">
+            Inserta el nombre de tu allegado para buscar una lista
+          </h6> */}
           <form className="text-center">
-            <h6>Inserta codigo de lista o usuario para buscar una lista</h6>
-            <div className="mb-3">
-              {/*<label for="exampleInputPassword1" class="form-label">Inserta codigo de lista o usuario</label>*/}
-              <input
-                type="password"
-                className="form-control"
-                id="exampleInputPassword1"
-                placeholder="1233212 o Isak34"
-              />
+            <div className="row">
+              <div className="col-10">
+                <input
+                  type="password"
+                  className="form-control"
+                  style={{ border: "1px solid #9b9b9b", "font-size": "14px" }}
+                  id="exampleInputPassword1"
+                  placeholder="Inserte el nombre de su allegado para buscar una lista"
+                />
+              </div>
+              <div className="col-2  d-flex align-items-center">
+                <button
+                  type="submit"
+                  className="btn btn-outline-primary"
+                  style={{ "font-size": "14px" }}
+                >
+                  Buscar
+                </button>
+              </div>
             </div>
-            <button type="submit" className="btn btn-outline-primary">
-              Buscar
-            </button>
           </form>
         </div>
       </div>

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wishlist_api.Models;
 using Microsoft.AspNetCore.Authorization;
+using wishlist_api.ViewModels;
 
 namespace wishlist_api.Controllers
 {
@@ -36,22 +37,25 @@ namespace wishlist_api.Controllers
                 }
 
                 var articulos = await _context.Articulos
-                    .Include(x => x.ArtLisReg!.LisRegLisPriv)
-                    .Include(x => x.ArtLisReg!.LisRegUsuario)
+                    .Include(x => x.ArtLisReg)
                     .Include(x => x.ArtRegEstatus)
                     .Where(art => art.ArtLisRegId == listId)
+                    .Select(articulo => new ArticulosViewModel
+                    {
+                        ArtId = articulo.ArtId,
+                        ArtNombre = articulo.ArtNombre,
+                        ArtUrl = articulo.ArtUrl,
+                        ArtLisRegId = articulo.ArtLisRegId,
+                        ArtLisRegNombre = articulo.ArtLisReg.LisRegNombre,
+                        ArtPrioridad = articulo.ArtPrioridad,
+                        ArtRegEstatusId = articulo.ArtRegEstatusId,
+                        ArtRegStatus = articulo.ArtRegEstatus.RegEstatus,
+                        ArtEstatus = articulo.ArtEstatus,
+                    })
                     .ToListAsync();
 
-                // Configura las opciones de serialización para manejar referencias circulares
-                var options = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                    MaxDepth = 64, // Ajusta según sea necesario para la profundidad de tu objeto
-
-                };
-
                 // Serializa los datos utilizando las opciones configuradas
-                var jsonResult = JsonSerializer.Serialize(articulos, options);
+                var jsonResult = JsonSerializer.Serialize(articulos);
 
                 // Devuelve el resultado serializado
                 return Content(jsonResult, "application/json");

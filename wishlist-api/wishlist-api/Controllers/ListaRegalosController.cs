@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using wishlist_api.Models;
 using Microsoft.AspNetCore.Authorization;
 using wishlist_api.ViewModels;
+using Microsoft.Extensions.Options;
 
 namespace wishlist_api.Controllers
 {
@@ -142,14 +143,37 @@ namespace wishlist_api.Controllers
             {
                 return NotFound();
             }
-            var listaRegalo = await _context.ListaRegalos.FindAsync(id);
+            var listaRegalo = await _context.ListaRegalos
+                .Include(x => x.LisRegUsuario!.UsuRolNavigation)
+                .Include(x => x.LisRegLisPriv)
+                .Where(lista => lista.LisRegId == id)
+                .Select(lista => new ListaRegaloViewModel
+                    {
+                        LisRegId = lista.LisRegId,
+                        LisRegNombre = lista.LisRegNombre,
+                        LisRegFecCreacion = lista.LisRegFecCreacion,
+                        LisRegUsuarioId = lista.LisRegUsuarioId,
+                        LisRegUsuario = lista.LisRegUsuario.UsuNombre,
+                        LisRegUsuarioApellido = lista.LisRegUsuario.UsuApellidos,
+                        LisRegUsuarioRolId = lista.LisRegUsuario.UsuRol,
+                        LisRegUsuarioRol = lista.LisRegUsuario.UsuRolNavigation.RolNombre,
+                        LisRegLisPrivId = lista.LisRegLisPrivId,
+                        LisRegLisPriv = lista.LisRegLisPriv.LisPrivPrivacidad,
+                        LisRegEstatus = lista.LisRegEstatus
+                    })
+                .FirstOrDefaultAsync();
 
             if (listaRegalo == null)
             {
                 return NotFound();
             }
 
-            return listaRegalo;
+            var jsonResult = JsonSerializer.Serialize(listaRegalo);
+
+            // Devuelve el resultado serializado
+            return Content(jsonResult, "application/json");
+
+           
         }
 
         // PUT: api/ListaRegalos/5
