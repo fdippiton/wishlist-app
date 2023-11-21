@@ -66,13 +66,13 @@ const Signin = () => {
               <label
                 className="form-label"
                 id="formEmail"
-                style={{ "font-size": "13px" }}
+                style={{ fontSize: "13px" }}
               >
                 Email
               </label>
             </div>
             <input
-              className="form-control form-control-sm"
+              className="form-control form-control-sm opacity-75"
               placeholder="Melek@example.com"
               type="email"
               name="UsuCorreo"
@@ -86,13 +86,13 @@ const Signin = () => {
               <label
                 className="form-label"
                 id="formPassword"
-                style={{ "font-size": "13px" }}
+                style={{ fontSize: "13px" }}
               >
                 Contrase&ntilde;a
               </label>
             </div>
             <input
-              className="form-control form-control-sm"
+              className="form-control form-control-sm opacity-75"
               placeholder="2h343hsdjH"
               type="password"
               name="UsuContrasena"
@@ -106,20 +106,20 @@ const Signin = () => {
               type="button"
               className="btn btn-primary"
               onClick={handleLoginButtonClick}
-              style={{ "font-size": "14px" }}
+              style={{ fontSize: "14px" }}
             >
               Iniciar sesi&oacute;n
             </button>
           </div>
 
           <div className="d-flex justify-content-center mt-3">
-            <span style={{ "font-size": "13px" }}>
+            <span style={{ fontSize: "13px" }}>
               &iquest;No tienes una cuenta?&nbsp;{" "}
             </span>{" "}
             <Link
               className="text-dark text-decoration-none"
               to="/signup"
-              style={{ "font-size": "13px" }}
+              style={{ fontSize: "13px" }}
             >
               <b className="text-primary"> Registrate</b>
             </Link>

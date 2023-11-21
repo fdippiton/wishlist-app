@@ -10,6 +10,7 @@ import { FaGift } from "react-icons/fa6";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { MdEditSquare } from "react-icons/md";
 import { RiDeleteBin2Fill } from "react-icons/ri";
+import { MdAddBox } from "react-icons/md";
 
 export function ListaRegalos() {
   const [listasRegalo, setListasRegalo] = useState(null);
@@ -53,7 +54,7 @@ export function ListaRegalos() {
 
           // Fetch data from Articulos API
           const articulosResponse = await fetch(
-            `http://localhost:5109/api/articulos/${listaId}`,
+            `http://localhost:5109/api/articulos/ByList/${listaId}`,
             {
               method: "GET",
               headers: {
@@ -78,6 +79,39 @@ export function ListaRegalos() {
       fetchUserData();
     }
   }, [user, authenticated, listaId]);
+
+  const inactivarArticulo = async (articuloId) => {
+    try {
+      // Verifica nuevamente la autenticación antes de realizar la solicitud
+      if (authenticated) {
+        const response = await fetch(
+          `http://localhost:5109/api/articulos/Inactivar/${articuloId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          console.log(`Artículo con ID ${articuloId} inactivado exitosamente.`);
+          // Puedes realizar otras acciones después de inactivar el artículo
+
+          setlistaArticulos((prevListaArticulos) =>
+            prevListaArticulos.filter(
+              (articulo) => articulo.ArtId !== articuloId
+            )
+          );
+        } else {
+          console.error(`Error al inactivar el artículo con ID ${articuloId}.`);
+        }
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
 
   return (
     <div className="row mt-5">
@@ -124,10 +158,9 @@ export function ListaRegalos() {
         <div className="col-6">
           {listaArticulos &&
             listaArticulos.map((articulo) => (
-              <div className="">
+              <div className="" key={articulo.ArtId}>
                 <div
                   className="card mb-2 border-0"
-                  key={articulo.Artid}
                   style={{
                     backgroundColor:
                       articulo.ArtRegStatus === "Recibido"
@@ -162,7 +195,7 @@ export function ListaRegalos() {
                             to={articulo.ArtUrl}
                             target="_blank"
                             style={{
-                              "font-size": "13px",
+                              fontSize: "13px",
                             }}
                           >
                             <FaExternalLinkAlt />
@@ -170,11 +203,7 @@ export function ListaRegalos() {
                         </div>
                       </div>
                       <div className="col-1 d-flex flex-column">
-                        <Link
-                          className="ms-2"
-                          to={articulo.ArtUrl}
-                          target="_blank"
-                        >
+                        <Link className="ms-2" target="_blank">
                           <MdEditSquare
                             style={{
                               width: "20px",
@@ -186,8 +215,10 @@ export function ListaRegalos() {
                         <br />
                         <Link
                           className="ms-2"
-                          to={articulo.ArtUrl}
-                          target="_blank"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            inactivarArticulo(articulo.ArtId);
+                          }}
                         >
                           <RiDeleteBin2Fill
                             style={{
@@ -197,12 +228,26 @@ export function ListaRegalos() {
                             }}
                           />
                         </Link>
+                        <Link className="ms-2" target="_blank"></Link>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
+        </div>
+      </div>
+
+      <div className="row d-flex justify-content-center mt-3">
+        <div className="col-10 d-flex justify-content-center">
+          <Link
+            className="btn btn-outline-dark"
+            style={{ fontSize: "14px" }}
+            to={`/añadirArticulo/${listaId}`}
+          >
+            <MdAddBox style={{ width: "30px", height: "30px" }} /> Nuevo
+            articulo
+          </Link>
         </div>
       </div>
     </div>

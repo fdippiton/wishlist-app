@@ -4,7 +4,7 @@ import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import Signin from "./components/Signin";
 import { Signup } from "./components/Signup";
-import PerfilUsuario from "./components/PerfilUsuario";
+import { PerfilUsuario } from "./components/PerfilUsuario";
 import PerfilAdmin from "./components/PerfilAdmin";
 import "./custom.css";
 import { BrowserRouter } from "react-router-dom";
@@ -13,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import { NavMenu } from "./components/NavMenu";
 import { Footer } from "./components/Footer";
 import { ListaRegalos } from "./components/ListaRegalos";
+import CrearArticulo from "./components/CrearArticulo";
 
 export const MyContext = createContext();
 
@@ -56,6 +57,10 @@ const App = () => {
             <Route path="/perfilUsuario" element={<PerfilUsuario />} />
             <Route path="/perfilAdmin" element={<PerfilAdmin />} />
             <Route path="/listaDeseos/:listaId" element={<ListaRegalos />} />
+            <Route
+              path="/añadirArticulo/:listaId"
+              element={<CrearArticulo />}
+            />
           </Routes>
           {/* <Footer /> */}
         </Layout>

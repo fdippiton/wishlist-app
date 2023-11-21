@@ -61,7 +61,7 @@ export function Signup() {
               </label>
             </div>
             <input
-              className="form-control form-control-sm"
+              className="form-control form-control-sm opacity-75"
               placeholder="Melek"
               type="text"
               name="UsuNombre"
@@ -81,7 +81,7 @@ export function Signup() {
               </label>
             </div>
             <input
-              className="form-control form-control-sm"
+              className="form-control form-control-sm opacity-75"
               placeholder="Olsen"
               type="text"
               name="UsuApellidos"
@@ -101,7 +101,7 @@ export function Signup() {
               </label>
             </div>
             <input
-              className="form-control form-control-sm"
+              className="form-control form-control-sm opacity-75"
               placeholder="Melek@example.com"
               type="email"
               name="UsuCorreo"
@@ -121,7 +121,7 @@ export function Signup() {
               </label>
             </div>
             <input
-              className="form-control form-control-sm"
+              className="form-control form-control-sm opacity-75"
               placeholder="2h343hsdjH"
               type="password"
               name="UsuContrasena"

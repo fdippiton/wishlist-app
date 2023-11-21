@@ -3,8 +3,11 @@ import { jwtDecode } from "jwt-decode";
 import { MyContext } from "../App";
 import { useNavigate, Link } from "react-router-dom";
 import { BiSolidUserCircle } from "react-icons/bi";
+import { MdOutlinePublic } from "react-icons/md";
+import { RiGitRepositoryPrivateFill } from "react-icons/ri";
+import { MdAddBox } from "react-icons/md";
 
-const PerfilUsuario = () => {
+export function PerfilUsuario() {
   const [listasRegalos, setListasRegalos] = useState(null);
   const { user, authenticated, handleLogout } = useContext(MyContext);
   const [userData, setUserData] = useState(null);
@@ -35,11 +38,7 @@ const PerfilUsuario = () => {
           if (response.ok) {
             const data = await response.json();
             setListasRegalos(data);
-
-            listasRegalos.forEach((item) => {
-              // Aquí puedes hacer algo con cada elemento dentro de $values
-              console.log(item);
-            });
+            console.log(data);
           } else {
             console.error("Error fetching user data");
           }
@@ -61,7 +60,7 @@ const PerfilUsuario = () => {
               <div className="row d-flex justify-content-between mt-3">
                 <div className="col-4 d-flex align-items-center">
                   <BiSolidUserCircle
-                    style={{ width: "50px", height: "50px" }}
+                    style={{ width: "40px", height: "40px" }}
                   />
                   <p className="m-0 fs-5">
                     {"   "}
@@ -75,51 +74,69 @@ const PerfilUsuario = () => {
                   </p>
                 </div>
 
-                {/* <div className="col-2">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={handleLogout}
-                  >
-                    Cerrar Sesión
-                  </button>
-                </div>
-              </div> */}
-
-                <div className="mt-3">
-                  <p className="fs-6">Mis listas de deseos</p>
-                </div>
-
-                <div className="row d-flex flex-column">
+                <div className="row d-flex flex-column align-items-center">
                   {/* Listar listas de regalo */}
 
                   {/* Lista 1 */}
 
+                  <div className="mt-3 text-center">
+                    <h3 className="fs-6">Mis listas de deseos</h3>
+                  </div>
                   {listasRegalos &&
                     listasRegalos.map((listaRegalos) => (
-                      <div className="col-6 mb-2" key={listaRegalos.LisRegId}>
+                      <div className="col-10 mb-2" key={listaRegalos.LisRegId}>
                         <div className="card">
                           <div className="card-body">
-                            <h6 className="card-title">
-                              {listaRegalos.LisRegNombre}
-                            </h6>
-                            <p className="card-text">
-                              {listaRegalos.LisRegLisPriv &&
-                                listaRegalos.LisRegLisPriv.LisPrivPrivacidad}
-                            </p>
-
-                            <Link
-                              className="btn btn-outline-primary"
-                              to={`/listaDeseos/${listaRegalos.LisRegId}`}
-                              style={{ "font-size": "13px" }}
-                            >
-                              Ver articulos
-                            </Link>
+                            <div className="row">
+                              <div className="col-10">
+                                <div className="d-flex align-items-center">
+                                  <h4>
+                                    {" "}
+                                    {listaRegalos.LisRegLisPriv &&
+                                    listaRegalos.LisRegLisPriv === "Publica" ? (
+                                      <MdOutlinePublic />
+                                    ) : (
+                                      <RiGitRepositoryPrivateFill />
+                                    )}
+                                  </h4>
+                                  <h6 className="card-title d-flex m-0 ps-2">
+                                    {listaRegalos.LisRegNombre}
+                                  </h6>
+                                </div>
+                                <h6 style={{ fontSize: "13px" }}>
+                                  Creada{" "}
+                                  {formatDateString(
+                                    listaRegalos.LisRegFecCreacion
+                                  )}
+                                </h6>
+                              </div>
+                              <div className="col-2 d-flex align-items-center justify-content-end">
+                                <Link
+                                  className="btn btn-outline-dark"
+                                  to={`/listaDeseos/${listaRegalos.LisRegId}`}
+                                  style={{ fontSize: "13px" }}
+                                >
+                                  Ver articulos
+                                </Link>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     ))}
                 </div>
-                {/* Renderiza el resto de la interfaz de usuario */}
+
+                <div className="row d-flex justify-content-center mt-3">
+                  <div className="col-10 d-flex justify-content-center">
+                    <Link
+                      className="btn btn-outline-dark"
+                      style={{ fontSize: "14px" }}
+                    >
+                      <MdAddBox style={{ width: "30px", height: "30px" }} />{" "}
+                      Nueva lista
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
@@ -130,6 +147,10 @@ const PerfilUsuario = () => {
       </div>
     </div>
   );
-};
+}
 
-export default PerfilUsuario;
+function formatDateString(dateString) {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const date = new Date(dateString);
+  return date.toLocaleDateString("es-ES", options);
+}

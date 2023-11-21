@@ -12,6 +12,7 @@ import "./NavMenu.css";
 import { MyContext } from "../App";
 import { jwtDecode } from "jwt-decode";
 import { BiSolidUserCircle } from "react-icons/bi";
+import { FaGift } from "react-icons/fa6";
 
 export function NavMenu() {
   const { authenticated, user, handleLogout } = useContext(MyContext);
@@ -25,8 +26,12 @@ export function NavMenu() {
   return (
     <nav className="navbar navbar-expand navbar-light bg-light">
       <div className="container">
-        <Link className="navbar-brand" to="/" style={{ "font-size": "25px" }}>
-          Wishlist
+        <Link
+          className="navbar-brand d-flex align-items-center"
+          to="/"
+          style={{ fontSize: "25px" }}
+        >
+          <FaGift className="me-2" /> Wishlist
         </Link>
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav ms-auto">
@@ -36,7 +41,7 @@ export function NavMenu() {
                   <Link
                     className="nav-link"
                     to="/perfilUsuario"
-                    style={{ "font-size": "15px" }}
+                    style={{ fontSize: "15px" }}
                   >
                     Dashboard
                   </Link>
@@ -49,7 +54,7 @@ export function NavMenu() {
                       <Link
                         className="nav-link"
                         to="/perfilAdmin"
-                        style={{ "font-size": "15px" }}
+                        style={{ fontSize: "15px" }}
                       >
                         Perfil Admin
                       </Link>
@@ -59,7 +64,7 @@ export function NavMenu() {
                   <button
                     className="btn btn-link nav-link text-danger"
                     onClick={handleLogoutClick}
-                    style={{ "font-size": "15px" }}
+                    style={{ fontSize: "15px" }}
                   >
                     Cerrar Sesión
                   </button>

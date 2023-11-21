@@ -6,6 +6,7 @@ import { CrearListaRegalos } from "./components/CrearListaRegalos";
 import PerfilAdmin from "./components/PerfilAdmin";
 import React from "react";
 import { ListaRegalos } from "./components/ListaRegalos";
+import CrearArticulo from "./components/CrearArticulo";
 
 const AppRoutes = [
   {
@@ -32,10 +33,15 @@ const AppRoutes = [
     path: "/perfilAdmin",
     element: <PerfilAdmin />,
   },
-  ,
+
   {
     path: "/listaDeseos/:listaId",
     element: <ListaRegalos />,
+  },
+
+  {
+    path: "/añadirArticulo/:listaId",
+    element: <CrearArticulo />,
   },
 ];
 

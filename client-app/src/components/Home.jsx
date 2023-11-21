@@ -25,10 +25,7 @@ export function Home() {
               className="text-dark text-decoration-none"
               to="/perfilUsuario"
             >
-              <b
-                className="btn btn-outline-primary"
-                style={{ "font-size": "13px" }}
-              >
+              <b className="btn btn-outline-dark" style={{ fontSize: "13px" }}>
                 Crear lista
               </b>
             </Link>
@@ -36,7 +33,7 @@ export function Home() {
             <Link className="text-dark text-decoration-none" to="/signup">
               <b
                 className="btn btn-outline-primary"
-                style={{ "font-size": "13px" }}
+                style={{ fontSize: "13px" }}
               >
                 Crear lista
               </b>
@@ -59,7 +56,7 @@ export function Home() {
                 <input
                   type="password"
                   className="form-control"
-                  style={{ border: "1px solid #9b9b9b", "font-size": "14px" }}
+                  style={{ border: "1px solid #9b9b9b", fontSize: "14px" }}
                   id="exampleInputPassword1"
                   placeholder="Inserte el nombre de su allegado para buscar una lista"
                 />
@@ -67,8 +64,8 @@ export function Home() {
               <div className="col-2  d-flex align-items-center">
                 <button
                   type="submit"
-                  className="btn btn-outline-primary"
-                  style={{ "font-size": "14px" }}
+                  className="btn btn-outline-dark"
+                  style={{ fontSize: "14px" }}
                 >
                   Buscar
                 </button>

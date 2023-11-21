@@ -26,7 +26,8 @@ namespace wishlist_api.Controllers
 
         // GET: api/Articulos
         // Obtener los articulos pertenecientes a una lista especifica
-        [HttpGet("{listId}")]
+        [HttpGet("ByList/{listId}")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulos(int listId)
         {
             try
@@ -39,7 +40,7 @@ namespace wishlist_api.Controllers
                 var articulos = await _context.Articulos
                     .Include(x => x.ArtLisReg)
                     .Include(x => x.ArtRegEstatus)
-                    .Where(art => art.ArtLisRegId == listId)
+                    .Where(art => art.ArtLisRegId == listId && art.ArtEstatus == "A")
                     .Select(articulo => new ArticulosViewModel
                     {
                         ArtId = articulo.ArtId,
@@ -75,6 +76,7 @@ namespace wishlist_api.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
 
         // Obtener todos los articulos
         [HttpGet]
@@ -123,23 +125,27 @@ namespace wishlist_api.Controllers
             }
         }
 
-        // GET: api/Articulos/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Articulo>> GetArticulo(int id)
-        //{
-        //  if (_context.Articulos == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    var articulo = await _context.Articulos.FindAsync(id);
 
-        //    if (articulo == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    return articulo;
-        //}
+
+
+        //GET: api/Articulos/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Articulo>> GetArticulo(int id)
+        {
+            if (_context.Articulos == null)
+            {
+                return NotFound();
+            }
+            var articulo = await _context.Articulos.FindAsync(id);
+
+            if (articulo == null)
+            {
+                return NotFound();
+            }
+
+            return articulo;
+        }
 
         // PUT: api/Articulos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -177,14 +183,35 @@ namespace wishlist_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Articulo>> PostArticulo(Articulo articulo)
         {
-          if (_context.Articulos == null)
-          {
-              return Problem("Entity set 'WishlistContext.Articulos'  is null.");
-          }
-            _context.Articulos.Add(articulo);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetArticulo", new { id = articulo.ArtId }, articulo);
+            try
+            {
+                if (_context.Articulos == null)
+                {
+                    return Problem("Entity set 'WishlistContext.Articulos' is null.");
+                }
+
+                _context.Articulos.Add(articulo);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetArticulo", new { id = articulo.ArtId }, articulo);
+            }
+            catch (Exception ex)
+            {
+                // Registra la excepción para obtener más detalles en los registros
+                Console.WriteLine($"Error al realizar la operación POST: {ex}");
+
+                // Registra la excepción interna si está presente
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException}");
+                }
+
+                // Devuelve un error interno del servidor con un mensaje personalizado
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+
+  
         }
 
         // DELETE: api/Articulos/5
@@ -210,6 +237,34 @@ namespace wishlist_api.Controllers
         private bool ArticuloExists(int id)
         {
             return (_context.Articulos?.Any(e => e.ArtId == id)).GetValueOrDefault();
+        }
+
+        [HttpPut("Inactivar/{id}")]
+        [Authorize]
+        public async Task<IActionResult> InactivarArticulo(int id)
+        {
+            try
+            {
+                var articulo = await _context.Articulos
+                    .FirstOrDefaultAsync(a => a.ArtId == id && a.ArtEstatus == "A");
+
+                if (articulo == null)
+                {
+                    return NotFound();
+                }
+
+                // Actualizar el campo ArtEstatus a "I" (inactivo)
+                articulo.ArtEstatus = "I";
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Maneja excepciones según tus necesidades
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
     }
 }
