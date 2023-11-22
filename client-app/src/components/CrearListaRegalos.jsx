@@ -74,27 +74,28 @@ export function CrearListaRegalos() {
   return (
     <div className="row d-flex justify-content-center">
       <div className="col-6">
-        <h2>Crear Lista de Deseos</h2>
+        <h3 className="mt-5 mb-5 text-center">Crear Lista de Deseos</h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label>Nombre de la Lista:</label>
             <input
-              className="form-control"
+              className="form-control opacity-75"
               type="text"
+              placeholder="Nombre de la Lista"
               name="LisRegNombre"
               value={formData.LisRegNombre}
               onChange={handleInputChange}
+              style={{ fontSize: "13px" }}
             />
           </div>
           <div className="mb-3">
-            <label>Selecciona privacidad</label>
             <select
-              className="form-control"
+              className="form-control opacity-75"
               name="LisRegLisPrivId"
               value={formData.LisRegLisPrivId}
               onChange={handleInputChange}
+              style={{ fontSize: "13px" }}
             >
-              <option value="">Selecciona...</option>
+              <option value="">-- Privacidad --</option>
               {privacidadDropdown.map((opcion) => (
                 <option
                   className="text-black"
@@ -106,8 +107,12 @@ export function CrearListaRegalos() {
               ))}
             </select>
           </div>
-          <div>
-            <button className="btn btn-primary" type="submit">
+          <div className="mb-3 text-center mt-3">
+            <button
+              className="btn btn-dark"
+              type="submit"
+              style={{ fontSize: "13px" }}
+            >
               Crear Lista
             </button>
           </div>
