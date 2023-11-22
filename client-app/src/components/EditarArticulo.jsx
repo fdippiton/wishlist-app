@@ -9,6 +9,7 @@ function EditarArticulo() {
   const { user, authenticated } = useContext(MyContext);
   const [listaArticulos, setlistaArticulos] = useState();
   const navigate = useNavigate();
+  const [estatusRegaloDropdown, seestatusRegaloDropdown] = useState([]);
 
   const [formData, setFormData] = useState({
     ArtId: 0,
@@ -38,6 +39,14 @@ function EditarArticulo() {
       // Fetch user-specific data using user.UserId and token
       const fetchUserData = async () => {
         try {
+          const response1 = await fetch(
+            "http://localhost:5109/api/regaloEstatus"
+          );
+          const estatusRegalodResponse = await response1.json();
+
+          seestatusRegaloDropdown(estatusRegalodResponse);
+          console.log(estatusRegalodResponse);
+
           const response = await fetch(
             `http://localhost:5109/api/articulos/${articuloId}`,
             {
@@ -167,6 +176,26 @@ function EditarArticulo() {
               <option value="Baja">Baja</option>
               <option value="Media">Media</option>
               <option value="Alta">Alta</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <select
+              className="form-select opacity-75"
+              name="ArtRegEstatusId"
+              value={formData.ArtRegEstatusId}
+              onChange={handleInputChange}
+              style={{ fontSize: "13px" }}
+            >
+              {estatusRegaloDropdown.map((opcion) => (
+                <option
+                  className="text-black"
+                  key={opcion.regEstatusId}
+                  value={opcion.regEstatusId}
+                >
+                  {opcion.regEstatus}
+                </option>
+              ))}
             </select>
           </div>
 

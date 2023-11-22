@@ -139,7 +139,7 @@ function RditarListaRegalos() {
   return (
     <div className="row d-flex justify-content-center">
       <div className="col-6">
-        <h3 className="mt-5 mb-5 text-center">Editar Lista de Deseo</h3>
+        <h3 className="mt-5 mb-5 text-center">Editar lista de deseos</h3>
         <form className="mt-4">
           <div className="mb-3">
             {/* <label className="form-label">Nombre del Artículo:</label> */}

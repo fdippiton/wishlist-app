@@ -121,7 +121,7 @@ export function PerfilUsuario() {
                         <div className="card">
                           <div className="card-body">
                             <div className="row">
-                              <div className="col-10">
+                              <div className="col-9">
                                 <div className="d-flex align-items-center">
                                   <h4>
                                     {" "}
@@ -143,7 +143,7 @@ export function PerfilUsuario() {
                                   )}
                                 </h6>
                               </div>
-                              <div className="col-2 d-flex align-items-center justify-content-end">
+                              <div className="col-3 d-flex align-items-center justify-content-end">
                                 <Link
                                   className="btn btn-outline-dark"
                                   to={`/listaDeseos/${listaRegalos.LisRegId}`}
