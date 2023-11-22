@@ -15,6 +15,7 @@ import { Footer } from "./components/Footer";
 import { ListaRegalos } from "./components/ListaRegalos";
 import CrearArticulo from "./components/CrearArticulo";
 import EditarArticulo from "./components/EditarArticulo";
+import EditarListaRegalos from "./components/EditarListaRegalos";
 
 export const MyContext = createContext();
 
@@ -69,6 +70,10 @@ const App = () => {
             <Route
               path="/editarArticulo/:articuloId"
               element={<EditarArticulo />}
+            />
+            <Route
+              path="/editarListaRegalos/:listaRegId"
+              element={<EditarListaRegalos />}
             />
           </Routes>
           {/* <Footer /> */}

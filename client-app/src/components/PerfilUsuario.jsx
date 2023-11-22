@@ -7,6 +7,7 @@ import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { MdAddBox } from "react-icons/md";
 import { RiDeleteBin2Fill } from "react-icons/ri";
+import { MdEditSquare } from "react-icons/md";
 
 export function PerfilUsuario() {
   const [listasRegalos, setListasRegalos] = useState(null);
@@ -149,6 +150,19 @@ export function PerfilUsuario() {
                                   style={{ fontSize: "13px" }}
                                 >
                                   Ver articulos
+                                </Link>
+
+                                <Link
+                                  className="ms-2"
+                                  to={`/editarListaRegalos/${listaRegalos.LisRegId}`}
+                                >
+                                  <MdEditSquare
+                                    style={{
+                                      width: "20px",
+                                      height: "20px",
+                                      color: "#3F3F3F",
+                                    }}
+                                  />
                                 </Link>
 
                                 <Link
