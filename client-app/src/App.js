@@ -14,6 +14,7 @@ import { NavMenu } from "./components/NavMenu";
 import { Footer } from "./components/Footer";
 import { ListaRegalos } from "./components/ListaRegalos";
 import CrearArticulo from "./components/CrearArticulo";
+import EditarArticulo from "./components/EditarArticulo";
 
 export const MyContext = createContext();
 
@@ -56,10 +57,18 @@ const App = () => {
             <Route path="/signin" element={<Signin />} />
             <Route path="/perfilUsuario" element={<PerfilUsuario />} />
             <Route path="/perfilAdmin" element={<PerfilAdmin />} />
+            <Route
+              path="/crearListaRegalos/:usuarioId"
+              element=<CrearListaRegalos />
+            />
             <Route path="/listaDeseos/:listaId" element={<ListaRegalos />} />
             <Route
               path="/añadirArticulo/:listaId"
               element={<CrearArticulo />}
+            />
+            <Route
+              path="/editarArticulo/:articuloId"
+              element={<EditarArticulo />}
             />
           </Routes>
           {/* <Footer /> */}

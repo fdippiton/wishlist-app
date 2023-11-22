@@ -203,7 +203,10 @@ export function ListaRegalos() {
                         </div>
                       </div>
                       <div className="col-1 d-flex flex-column">
-                        <Link className="ms-2" target="_blank">
+                        <Link
+                          className="ms-2"
+                          to={`/editarArticulo/${articulo.ArtId}`}
+                        >
                           <MdEditSquare
                             style={{
                               width: "20px",

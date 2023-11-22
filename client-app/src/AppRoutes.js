@@ -22,7 +22,7 @@ const AppRoutes = [
     element: <Signin />,
   },
   {
-    path: "/crearListaRegalos",
+    path: "/crearListaRegalos/:usuarioId",
     element: <CrearListaRegalos />,
   },
   {
@@ -42,6 +42,10 @@ const AppRoutes = [
   {
     path: "/añadirArticulo/:listaId",
     element: <CrearArticulo />,
+  },
+  {
+    path: "/editarArticulo/:articuloId",
+    element: <EditarArticulo />,
   },
 ];
 

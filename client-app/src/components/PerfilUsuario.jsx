@@ -131,6 +131,7 @@ export function PerfilUsuario() {
                     <Link
                       className="btn btn-outline-dark"
                       style={{ fontSize: "14px" }}
+                      to={`/crearListaRegalos/${user.UserId}`}
                     >
                       <MdAddBox style={{ width: "30px", height: "30px" }} />{" "}
                       Nueva lista

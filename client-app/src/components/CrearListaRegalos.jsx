@@ -1,13 +1,17 @@
-﻿import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+﻿import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function CrearListaRegalos() {
+  const navigate = useNavigate();
+  const { usuarioId } = useParams();
+
   const [formData, setFormData] = useState({
-    LisRegNombre: '',
-    LisRegFecCreacion: '',
-    LisRegUsuarioId: 6, // Debes proporcionar el usuario correcto
+    LisRegNombre: "",
+    LisRegFecCreacion: "",
+    LisRegUsuarioId: parseInt(usuarioId, 10), // Debes proporcionar el usuario correcto
     LisRegLisPrivId: 0, // Debes proporcionar el ID correcto
-    LisRegEstatus: 'A',
+    LisRegEstatus: "A",
   });
 
   const [privacidadDropdown, setprivacidadDropdown] = useState([]);
@@ -16,27 +20,25 @@ export function CrearListaRegalos() {
     const fetchData = async () => {
       try {
         const [listaPrivacidadResponse] = await Promise.all([
-          fetch(process.env.WISHLIST_API + 'listaPrivacidad').then((response) =>
-            response.json()
+          fetch("http://localhost:5109/api/" + "listaPrivacidad").then(
+            (response) => response.json()
           ),
         ]);
 
         setprivacidadDropdown(listaPrivacidadResponse);
 
-        /*console.log("Lista de Privacidad:", listaPrivacidadResponse);*/
+        const fechaActual = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+        setFormData({
+          ...formData,
+          LisRegFecCreacion: fechaActual,
+        });
       } catch (error) {
-        console.error('Error al obtener datos:', error);
+        console.error("Error al obtener datos:", error);
       }
     };
 
-    const fechaActual = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
-    setFormData({
-      ...formData,
-      LisRegFecCreacion: fechaActual,
-    });
-
     fetchData();
-  }, [formData]);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -45,30 +47,27 @@ export function CrearListaRegalos() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(formData);
 
     try {
-      const response = await fetch(process.env.WISHLIST_API + 'listaRegalos', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5109/api/listaRegalos", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          LisRegNombre: formData.LisRegNombre,
-          LisRegFecCreacion: formData.LisRegFecCreacion,
-          LisRegUsuarioId: formData.LisRegUsuarioId,
-          LisRegLisPrivId: formData.LisRegLisPrivId,
-          LisRegEstatus: formData.LisRegEstatus,
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        console.log('Guardado exitosamente:', response);
+        console.log("Guardado exitosamente:", response);
+        navigate(`/perfilUsuario`);
+        console.log(formData);
       } else {
         // Manejar otros códigos de estado según tus necesidades
-        console.error('Error:', response.status);
+        console.error("Error:", response.status);
       }
     } catch (error) {
-      console.error('Error al realizar la solicitud:', error);
+      console.error("Error al realizar la solicitud:", error);
     }
   };
 
@@ -95,7 +94,7 @@ export function CrearListaRegalos() {
               value={formData.LisRegLisPrivId}
               onChange={handleInputChange}
             >
-              {/*<option value="">Selecciona...</option>*/}
+              <option value="">Selecciona...</option>
               {privacidadDropdown.map((opcion) => (
                 <option
                   className="text-black"

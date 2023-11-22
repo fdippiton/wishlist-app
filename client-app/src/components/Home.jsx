@@ -31,10 +31,7 @@ export function Home() {
             </Link>
           ) : (
             <Link className="text-dark text-decoration-none" to="/signup">
-              <b
-                className="btn btn-outline-primary"
-                style={{ fontSize: "13px" }}
-              >
+              <b className="btn btn-outline-dark" style={{ fontSize: "13px" }}>
                 Crear lista
               </b>
             </Link>

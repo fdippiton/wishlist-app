@@ -131,6 +131,7 @@ namespace wishlist_api.Controllers
 
         //GET: api/Articulos/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Articulo>> GetArticulo(int id)
         {
             if (_context.Articulos == null)
@@ -150,32 +151,40 @@ namespace wishlist_api.Controllers
         // PUT: api/Articulos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticulo(int id, Articulo articulo)
+        [Authorize]
+        public async Task<IActionResult> PutArticulo(int id, [FromBody] Articulo articulo)
         {
-            if (id != articulo.ArtId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(articulo).State = EntityState.Modified;
-
             try
             {
+                if (id != articulo.ArtId)
+                {
+                    return BadRequest("The provided ID in the URL does not match the ID in the request body.");
+                }
+
+                _context.Entry(articulo).State = EntityState.Modified;
+
                 await _context.SaveChangesAsync();
+
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!ArticuloExists(id))
                 {
-                    return NotFound();
+                    return NotFound($"Articulo with ID {id} not found.");
                 }
                 else
                 {
-                    throw;
+                    return StatusCode(500, "An error occurred while updating the Articulo.");
                 }
             }
+            catch 
+            {
+                // Log the exception for debugging purposes
+                // logger.LogError($"An error occurred: {ex}");
 
-            return NoContent();
+                return StatusCode(500, "An unexpected error occurred while processing the request.");
+            }
         }
 
         // POST: api/Articulos
