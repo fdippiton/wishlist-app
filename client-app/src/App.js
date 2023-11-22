@@ -16,6 +16,7 @@ import { ListaRegalos } from "./components/ListaRegalos";
 import CrearArticulo from "./components/CrearArticulo";
 import EditarArticulo from "./components/EditarArticulo";
 import EditarListaRegalos from "./components/EditarListaRegalos";
+import { ListasPublicas } from "./components/ListasPublicas";
 
 export const MyContext = createContext();
 
@@ -75,6 +76,7 @@ const App = () => {
               path="/editarListaRegalos/:listaRegId"
               element={<EditarListaRegalos />}
             />
+            <Route path="/listasUsuario/:userId" element=<ListasPublicas /> />
           </Routes>
           {/* <Footer /> */}
         </Layout>

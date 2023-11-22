@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wishlist_api.Models;
 using Microsoft.AspNetCore.Authorization;
+using wishlist_api.ViewModels;
 
 namespace wishlist_api.Controllers
 {
@@ -25,7 +26,7 @@ namespace wishlist_api.Controllers
 
         // GET: api/Usuarios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios([FromQuery] string searchQuery)
         {
             try
             {
@@ -34,20 +35,34 @@ namespace wishlist_api.Controllers
                     return NotFound();
                 }
 
-                var usuarios = await _context.Usuarios
+                // Apply search filter if a search query is provided
+                var usuariosQuery = _context.Usuarios
                     .Include(x => x.UsuRolNavigation)
-                    .ToListAsync();
+                    .Where(x => x.UsuEstatus == "A");
 
-                // Configura las opciones de serialización para manejar referencias circulares
-                var options = new JsonSerializerOptions
+                if (!string.IsNullOrEmpty(searchQuery))
                 {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                    MaxDepth = 64, // Ajusta según sea necesario para la profundidad de tu objeto
-                                  
-                };
+                    usuariosQuery = usuariosQuery
+                        .Where(u => EF.Functions.Like(u.UsuNombre + " " + u.UsuApellidos, $"%{searchQuery}%"));
+                }
 
+                var usuarios = await usuariosQuery
+                    .Select(usuario => new UsuariosViewModel
+                    {
+                        UsuId = usuario.UsuId,
+                        UsuNombre = usuario.UsuNombre,
+                        UsuApellidos = usuario.UsuApellidos,
+                        UsuCorreo = usuario.UsuCorreo,
+                        UsuContrasena = usuario.UsuContrasena,
+                        UsuProfilePhoto = usuario.UsuProfilePhoto,
+                        UsuRol = usuario.UsuRol,
+                        UsuEstatus = usuario.UsuEstatus,
+                    })
+                    .ToListAsync();
+                
+                // return Ok(usuarios);
                 // Serializa los datos utilizando las opciones configuradas
-                var jsonResult = JsonSerializer.Serialize(usuarios, options);
+                var jsonResult = JsonSerializer.Serialize(usuarios);
 
                 // Devuelve el resultado serializado
                 return Content(jsonResult, "application/json");

@@ -51,6 +51,10 @@ const AppRoutes = [
     path: "/editarListaRegalos/:listaRegId",
     element: <EditarListaRegalos />,
   },
+  {
+    path: "/listasUsuario/:userId",
+    element: <ListasPublicas />,
+  },
 ];
 
 export default AppRoutes;

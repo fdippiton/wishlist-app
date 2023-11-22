@@ -89,6 +89,70 @@ namespace wishlist_api.Controllers
             }
         }
 
+        // Obtener las listaRegalos publicas de un usuario especifico 
+        // GET: api/ListaRegalos
+        [HttpGet("listasUsuario/{userId}")]
+        public async Task<ActionResult<IEnumerable<ListaRegalo>>> GetListaRegalosPublicas(int userId)
+        {
+            try
+            {
+                if (_context.ListaRegalos == null)
+                {
+                    return NotFound();
+                }
+
+                var listaRegalos = await _context.ListaRegalos
+                    .Include(x => x.LisRegUsuario)
+                    .Include(x => x.LisRegLisPriv)
+                    .Where(lista => lista.LisRegUsuarioId == userId)
+                    .Where(lista => lista.LisRegEstatus == "A")
+                    .Where(lista => lista.LisRegLisPrivId == 1)
+                    .Select(lista => new ListaRegaloViewModel
+                    {
+                        LisRegId = lista.LisRegId,
+                        LisRegNombre = lista.LisRegNombre,
+                        LisRegFecCreacion = lista.LisRegFecCreacion,
+                        LisRegUsuarioId = lista.LisRegUsuarioId,
+                        LisRegUsuario = lista.LisRegUsuario.UsuNombre,
+                        LisRegUsuarioApellido = lista.LisRegUsuario.UsuApellidos,
+                        LisRegUsuarioRolId = lista.LisRegUsuario.UsuRol,
+                        LisRegUsuarioRol = lista.LisRegUsuario.UsuRolNavigation.RolNombre,
+                        LisRegLisPrivId = lista.LisRegLisPrivId,
+                        LisRegLisPriv = lista.LisRegLisPriv.LisPrivPrivacidad,
+                        LisRegEstatus = lista.LisRegEstatus
+                    })
+                    .ToListAsync();
+
+                // Configura las opciones de serialización para manejar referencias circulares
+                //var options = new JsonSerializerOptions
+                //{
+                //    ReferenceHandler = ReferenceHandler.Preserve,
+                //    MaxDepth = 10, // Ajusta según sea necesario para la profundidad de tu objeto
+
+                //};
+
+                // Serializa los datos utilizando las opciones configuradas
+                var jsonResult = JsonSerializer.Serialize(listaRegalos);
+
+                // Devuelve el resultado serializado
+                return Content(jsonResult, "application/json");
+            }
+            catch (Exception ex)
+            {
+                // Registra la excepción para obtener más detalles en los registros
+                Console.WriteLine($"Error al realizar la operación GET: {ex}");
+
+                // Registra la excepción interna si está presente
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException}");
+                }
+
+                // Devuelve un error interno del servidor con un mensaje personalizado
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
         // Obtener todas las listas de regalos publicas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ListaRegalo>>> GetListaRegalos()
