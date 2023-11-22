@@ -42,6 +42,7 @@ namespace wishlist_api.Controllers
                     .Include(x => x.LisRegUsuario!.UsuRolNavigation)
                     .Include(x => x.LisRegLisPriv)
                     .Where(lista => lista.LisRegUsuarioId == userId)
+                    .Where(lista => lista.LisRegEstatus == "A")
                     .Select(lista => new ListaRegaloViewModel 
                     {
                         LisRegId = lista.LisRegId,
@@ -264,6 +265,35 @@ namespace wishlist_api.Controllers
         private bool ListaRegaloExists(int id)
         {
             return (_context.ListaRegalos?.Any(e => e.LisRegId == id)).GetValueOrDefault();
+        }
+
+
+        [HttpPut("Inactivar/{id}")]
+        [Authorize]
+        public async Task<IActionResult> InactivarLista(int id)
+        {
+            try
+            {
+                var articulo = await _context.ListaRegalos
+                    .FirstOrDefaultAsync(a => a.LisRegId == id && a.LisRegEstatus == "A");
+
+                if (articulo == null)
+                {
+                    return NotFound();
+                }
+
+                // Actualizar el campo LisRegEstatus a "I" (inactivo)
+                articulo.LisRegEstatus = "I";
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Maneja excepciones según tus necesidades
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
     }
 }

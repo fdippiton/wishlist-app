@@ -6,6 +6,7 @@ import { BiSolidUserCircle } from "react-icons/bi";
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { MdAddBox } from "react-icons/md";
+import { RiDeleteBin2Fill } from "react-icons/ri";
 
 export function PerfilUsuario() {
   const [listasRegalos, setListasRegalos] = useState(null);
@@ -50,6 +51,37 @@ export function PerfilUsuario() {
       fetchUserData();
     }
   }, [user, authenticated]);
+
+  const inactivarLista = async (listaRegId) => {
+    try {
+      // Verifica nuevamente la autenticación antes de realizar la solicitud
+      if (authenticated) {
+        const response = await fetch(
+          `http://localhost:5109/api/listaRegalos/Inactivar/${listaRegId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          console.log(`Lista con ID ${listaRegId} inactivado exitosamente.`);
+          // Puedes realizar otras acciones después de inactivar el artículo
+
+          setListasRegalos((prevListasRegalos) =>
+            prevListasRegalos.filter((lista) => lista.LisRegId !== listaRegId)
+          );
+        } else {
+          console.error(`Error al inactivar el artículo con ID ${listaRegId}.`);
+        }
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
 
   return (
     <div className="container mt-3">
@@ -117,6 +149,22 @@ export function PerfilUsuario() {
                                   style={{ fontSize: "13px" }}
                                 >
                                   Ver articulos
+                                </Link>
+
+                                <Link
+                                  className="ms-2"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    inactivarLista(listaRegalos.LisRegId);
+                                  }}
+                                >
+                                  <RiDeleteBin2Fill
+                                    style={{
+                                      width: "20px",
+                                      height: "20px",
+                                      color: "#3F3F3F",
+                                    }}
+                                  />
                                 </Link>
                               </div>
                             </div>
