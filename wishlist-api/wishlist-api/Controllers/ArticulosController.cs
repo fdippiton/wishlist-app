@@ -77,6 +77,58 @@ namespace wishlist_api.Controllers
             }
         }
 
+        // GET: api/Articulos
+        // Obtener los articulos pertenecientes a una lista especifica publicas
+        [HttpGet("listaPublica/{listId}")]
+        public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulosListaPublica(int listId)
+        {
+            try
+            {
+                if (_context.Articulos == null)
+                {
+                    return NotFound();
+                }
+
+                var articulos = await _context.Articulos
+                    .Include(x => x.ArtLisReg)
+                    .Include(x => x.ArtRegEstatus)
+                    .Where(art => art.ArtLisRegId == listId && art.ArtEstatus == "A" && art.ArtRegEstatusId == 2)
+                    .Select(articulo => new ArticulosViewModel
+                    {
+                        ArtId = articulo.ArtId,
+                        ArtNombre = articulo.ArtNombre,
+                        ArtUrl = articulo.ArtUrl,
+                        ArtLisRegId = articulo.ArtLisRegId,
+                        ArtLisRegNombre = articulo.ArtLisReg.LisRegNombre,
+                        ArtPrioridad = articulo.ArtPrioridad,
+                        ArtRegEstatusId = articulo.ArtRegEstatusId,
+                        ArtRegStatus = articulo.ArtRegEstatus.RegEstatus,
+                        ArtEstatus = articulo.ArtEstatus,
+                    })
+                    .ToListAsync();
+
+                // Serializa los datos utilizando las opciones configuradas
+                var jsonResult = JsonSerializer.Serialize(articulos);
+
+                // Devuelve el resultado serializado
+                return Content(jsonResult, "application/json");
+            }
+            catch (Exception ex)
+            {
+                // Registra la excepción para obtener más detalles en los registros
+                Console.WriteLine($"Error al realizar la operación GET: {ex}");
+
+                // Registra la excepción interna si está presente
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException}");
+                }
+
+                // Devuelve un error interno del servidor con un mensaje personalizado
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
 
         // Obtener todos los articulos
         [HttpGet]

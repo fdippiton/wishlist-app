@@ -55,6 +55,10 @@ const AppRoutes = [
     path: "/listasUsuario/:userId",
     element: <ListasPublicas />,
   },
+  {
+    path: "/articulosListasPublicas/:listaRegId",
+    element: <ArticulosListasPublicas />,
+  },
 ];
 
 export default AppRoutes;

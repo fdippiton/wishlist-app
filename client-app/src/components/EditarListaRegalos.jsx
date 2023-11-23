@@ -122,10 +122,10 @@ function RditarListaRegalos() {
               .get("content-type")
               .includes("application/json")
           ) {
-            const errorData = await articulosResponse.json();
+            const errorData = await listaResponse.json();
             console.error("Error details:", errorData);
           } else {
-            const errorText = await articulosResponse.text();
+            const errorText = await listaResponse.text();
             console.error("Non-JSON response:", errorText);
           }
         }

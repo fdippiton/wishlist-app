@@ -12,109 +12,67 @@ import { MdEditSquare } from "react-icons/md";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { MdAddBox } from "react-icons/md";
 
-export function ListaRegalos() {
+export function ArticulosListasPublicas() {
   const [listasRegalo, setListasRegalo] = useState(null);
   const [listaArticulos, setlistaArticulos] = useState(null);
   const { user, authenticated, handleLogout } = useContext(MyContext);
   const navigate = useNavigate();
 
   // Obtener listaId de los parámetros de la ruta
-  const { listaId } = useParams();
+  const { listaRegId } = useParams();
 
   useEffect(() => {
-    if (!authenticated) {
-      // Redirect to login if not authenticated
-      navigate("/signin");
-    }
-  }, [authenticated, navigate]);
-
-  useEffect(() => {
-    if (authenticated) {
-      // Fetch user-specific data using user.UserId and token
-      const fetchUserData = async () => {
-        try {
-          const listaRegalosResponse = await fetch(
-            `http://localhost:5109/api/listaRegalos/ById/${listaId}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              },
-            }
-          );
-
-          if (listaRegalosResponse.ok) {
-            const data = await listaRegalosResponse.json();
-            setListasRegalo(data);
-
-            console.log(data);
-          } else {
-            console.error("Error fetching user data");
-          }
-
-          // Fetch data from Articulos API
-          const articulosResponse = await fetch(
-            `http://localhost:5109/api/articulos/ByList/${listaId}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              },
-            }
-          );
-
-          if (articulosResponse.ok) {
-            const articulosData = await articulosResponse.json();
-            setlistaArticulos(articulosData);
-
-            console.log("Articulos:", articulosData);
-          } else {
-            console.error("Error fetching Articulos data");
-          }
-        } catch (error) {
-          console.error("Error in request:", error);
-        }
-      };
-
-      fetchUserData();
-    }
-  }, [user, authenticated, listaId]);
-
-  const inactivarArticulo = async (articuloId) => {
-    try {
-      // Verifica nuevamente la autenticación antes de realizar la solicitud
-      if (authenticated) {
-        const response = await fetch(
-          `http://localhost:5109/api/articulos/Inactivar/${articuloId}`,
+    // Fetch user-specific data using user.UserId and token
+    const fetchUserData = async () => {
+      try {
+        const listaRegalosResponse = await fetch(
+          `http://localhost:5109/api/listaRegalos/ById/${listaRegId}`,
           {
-            method: "PUT",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           }
         );
 
-        if (response.ok) {
-          console.log(`Artículo con ID ${articuloId} inactivado exitosamente.`);
-          // Puedes realizar otras acciones después de inactivar el artículo
+        if (listaRegalosResponse.ok) {
+          const data = await listaRegalosResponse.json();
+          setListasRegalo(data);
 
-          setlistaArticulos((prevListaArticulos) =>
-            prevListaArticulos.filter(
-              (articulo) => articulo.ArtId !== articuloId
-            )
-          );
+          console.log(data);
         } else {
-          console.error(`Error al inactivar el artículo con ID ${articuloId}.`);
+          console.error("Error fetching user data");
         }
+
+        // Fetch data from Articulos API
+        const articulosResponse = await fetch(
+          `http://localhost:5109/api/articulos/listaPublica/${listaRegId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (articulosResponse.ok) {
+          const articulosData = await articulosResponse.json();
+          setlistaArticulos(articulosData);
+
+          console.log("Articulos:", articulosData);
+        } else {
+          console.error("Error fetching Articulos data");
+        }
+      } catch (error) {
+        console.error("Error in request:", error);
       }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  };
+    };
+
+    fetchUserData();
+  }, [user, listaRegId]);
 
   return (
-    <div className="row mt-5">
+    <div className="row mt-5 ">
       {listasRegalo && (
         <div className="row">
           <div className="col-8">
@@ -202,55 +160,11 @@ export function ListaRegalos() {
                           </Link>
                         </div>
                       </div>
-                      <div className="col-1 d-flex flex-column">
-                        <Link
-                          className="ms-2"
-                          to={`/editarArticulo/${articulo.ArtId}`}
-                        >
-                          <MdEditSquare
-                            style={{
-                              width: "20px",
-                              height: "20px",
-                              color: "#3F3F3F",
-                            }}
-                          />
-                        </Link>
-                        <br />
-                        <Link
-                          className="ms-2"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            inactivarArticulo(articulo.ArtId);
-                          }}
-                        >
-                          <RiDeleteBin2Fill
-                            style={{
-                              width: "20px",
-                              height: "20px",
-                              color: "#3F3F3F",
-                            }}
-                          />
-                        </Link>
-                        <Link className="ms-2" target="_blank"></Link>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
-        </div>
-      </div>
-
-      <div className="row d-flex justify-content-center mt-3">
-        <div className="col-10 d-flex justify-content-center">
-          <Link
-            className="btn btn-outline-dark"
-            style={{ fontSize: "14px" }}
-            to={`/añadirArticulo/${listaId}`}
-          >
-            <MdAddBox style={{ width: "30px", height: "30px" }} /> Nuevo
-            articulo
-          </Link>
         </div>
       </div>
     </div>

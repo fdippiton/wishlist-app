@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
+import { IoArrowBackSharp } from "react-icons/io5";
 
 export function ListasPublicas() {
   const { userId } = useParams();
@@ -48,6 +49,7 @@ export function ListasPublicas() {
           if (data.length > 0) {
             setListasRegalos(data);
           } else {
+            console.log(usuario);
             setMensaje(
               `${usuario.usuarioNombre} ${usuario.usuarioApellido} no tiene listas públicas.`
             );
@@ -66,51 +68,65 @@ export function ListasPublicas() {
   }, []);
 
   return (
-    <div className="mt-5">
-      <h2 className="mb-5">
-        Listas de {usuario.usuarioNombre} {usuario.usuarioApellido}
-      </h2>
+    <div className="mt-5 d-flex justify-content-center flex-column">
+      <div className="row ">
+        <div className="col-12 d-flex align-items-center">
+          <Link className=" mb-2 me-2" style={{ fontSize: "14px" }} to={`/`}>
+            <IoArrowBackSharp style={{ width: "30px", height: "30px" }} />{" "}
+          </Link>
+          <h3 className="mb-3">
+            Listas de {usuario.usuarioNombre} {usuario.usuarioApellido}
+          </h3>
+        </div>
+      </div>
 
-      {mensaje && <h5>{mensaje}</h5>}
-      {listasRegalos &&
-        listasRegalos.map((listaRegalos) => (
-          <div className="col-10 mb-2" key={listaRegalos.LisRegId}>
-            <div className="card">
-              <div className="card-body">
-                <div className="row">
-                  <div className="col-9">
-                    <div className="d-flex align-items-center">
-                      <h4>
-                        {" "}
-                        {listaRegalos.LisRegLisPriv &&
-                        listaRegalos.LisRegLisPriv === "Publica" ? (
-                          <MdOutlinePublic />
-                        ) : (
-                          <RiGitRepositoryPrivateFill />
-                        )}
-                      </h4>
-                      <h6 className="card-title d-flex m-0 ps-2">
-                        {listaRegalos.LisRegNombre}
+      <div className="row d-flex justify-content-center">
+        {listasRegalos &&
+          listasRegalos.map((listaRegalos) => (
+            <div className="col-10 mb-2 " key={listaRegalos.LisRegId}>
+              <div className="card">
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-9">
+                      <div className="d-flex align-items-center">
+                        <h4>
+                          {" "}
+                          {listaRegalos.LisRegLisPriv &&
+                          listaRegalos.LisRegLisPriv === "Publica" ? (
+                            <MdOutlinePublic />
+                          ) : (
+                            <RiGitRepositoryPrivateFill />
+                          )}
+                        </h4>
+                        <h6 className="card-title d-flex m-0 ps-2">
+                          {listaRegalos.LisRegNombre}
+                        </h6>
+                      </div>
+                      <h6 style={{ fontSize: "13px" }}>
+                        Creada{" "}
+                        {formatDateString(listaRegalos.LisRegFecCreacion)}
                       </h6>
                     </div>
-                    <h6 style={{ fontSize: "13px" }}>
-                      Creada {formatDateString(listaRegalos.LisRegFecCreacion)}
-                    </h6>
-                  </div>
-                  <div className="col-3 d-flex align-items-center justify-content-end">
-                    <Link
-                      className="btn btn-outline-dark"
-                      to={`/listaDeseos/${listaRegalos.LisRegId}`}
-                      style={{ fontSize: "13px" }}
-                    >
-                      Ver articulos
-                    </Link>
+                    <div className="col-3 d-flex align-items-center justify-content-end">
+                      <Link
+                        className="btn btn-outline-dark"
+                        to={`/articulosListasPublicas/${listaRegalos.LisRegId}`}
+                        style={{ fontSize: "13px" }}
+                      >
+                        Ver articulos
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          ))}
+        {mensaje && (
+          <div className="alert alert-danger text-center mt-3" role="alert">
+            {mensaje}
           </div>
-        ))}
+        )}
+      </div>
     </div>
   );
 }
