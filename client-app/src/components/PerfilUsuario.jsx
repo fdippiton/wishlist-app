@@ -15,16 +15,15 @@ export function PerfilUsuario() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
+  // Redirect to login if not authenticated
   useEffect(() => {
     if (!authenticated) {
-      // Redirect to login if not authenticated
       navigate("/signin");
     }
   }, [authenticated, navigate]);
 
   useEffect(() => {
     if (authenticated) {
-      // Fetch user-specific data using user.UserId and token
       const fetchUserData = async () => {
         try {
           const response = await fetch(

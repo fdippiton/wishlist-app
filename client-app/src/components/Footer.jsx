@@ -1,16 +1,18 @@
 export function Footer() {
   var styles = {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "#D3D3D3",
+    textAlign: "center",
+    padding: "10px 0",
     fontSize: "13px",
-    margin: "auto 0px",
   };
 
   return (
-    <footer
-      className=" text-center py-2"
-      style={{ backgroundColor: "#D3D3D3" }}
-    >
+    <footer className=" text-center py-3" style={styles}>
       <div className="container">
-        <p style={styles}>&copy; 2023 Wishlist</p>
+        <p>&copy; 2023 Wishlist</p>
       </div>
     </footer>
   );

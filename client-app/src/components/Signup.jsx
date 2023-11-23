@@ -1,3 +1,5 @@
+/* --------------------------------- Signup --------------------------------- */
+
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +21,7 @@ export function Signup() {
     setRegistrationData({ ...registrationData, [name]: value });
   };
 
+  /* ---------------------------- Registrar usuario --------------------------- */
   const handleRegister = async () => {
     try {
       const response = await fetch("http://localhost:5109/api/Usuarios", {
@@ -31,11 +34,11 @@ export function Signup() {
 
       if (response.ok) {
         console.log("Usuario registrado exitosamente");
-        navigate("/Signin");
         // Maneja la respuesta del servidor (puede redirigir al usuario o mostrar un mensaje de éxito)
+        navigate("/Signin");
       } else {
-        console.error("Error al registrar usuario");
         // Maneja los errores del servidor
+        console.error("Error al registrar usuario");
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
@@ -49,6 +52,7 @@ export function Signup() {
         <h6 className="text-center">
           Regístrate ahora y comienza a crear tus listas de deseos
         </h6>
+
         <form className="mt-5">
           <div>
             <div className="d-flex justify-content-start">

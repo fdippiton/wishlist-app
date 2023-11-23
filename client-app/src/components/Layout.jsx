@@ -1,12 +1,16 @@
 import React from "react";
 import { Container } from "reactstrap";
 import { NavMenu } from "./NavMenu";
+import { Footer } from "./Footer";
 
 export function Layout(props) {
   return (
-    <div className="container" style={{ height: "95.5vh" }}>
+    <div>
       {/* <NavMenu /> */}
-      <Container tag="main">{props.children}</Container>
+      <Container className="container" tag="main">
+        {props.children}
+      </Container>
+      <Footer></Footer>
     </div>
   );
 }

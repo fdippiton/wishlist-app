@@ -110,7 +110,7 @@ export function ArticulosListasPublicas() {
         </div>
       )}
 
-      <div className="row d-flex mt-4 justify-content-center mb-5">
+      <div className="row d-flex mt-4 justify-content-center pb-5">
         {/* Listar articulos de la lista */}
 
         <div className="col-6">

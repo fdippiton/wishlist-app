@@ -121,6 +121,14 @@ export function ListasPublicas() {
               </div>
             </div>
           ))}
+        {/* {listasRegalos && listasRegalos.length === 0 && (
+          <div className="alert alert-danger text-center mt-3" role="alert">
+            <h5>
+              {`${usuario.usuarioNombre} ${usuario.usuarioApellido} no tiene listas públicas`}
+            </h5>
+          </div>
+        )} */}
+
         {mensaje && (
           <div className="alert alert-danger text-center mt-3" role="alert">
             {mensaje}
