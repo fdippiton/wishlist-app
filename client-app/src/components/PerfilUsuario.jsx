@@ -28,6 +28,36 @@ export function PerfilUsuario() {
 
   useEffect(() => {
     if (authenticated) {
+      const fetchUser = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5109/api/usuarios/${user.UserId}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            setUserData(data);
+            console.log(data);
+          } else {
+            console.error("Error fetching user data");
+          }
+        } catch (error) {
+          console.error("Error in request:", error);
+        }
+      };
+
+      fetchUser();
+    }
+  }, [user, authenticated]);
+
+  useEffect(() => {
+    if (authenticated) {
       const fetchUserData = async () => {
         try {
           const response = await fetch(
@@ -95,9 +125,24 @@ export function PerfilUsuario() {
             <div>
               <div className="row d-flex justify-content-between mt-3 mb-5">
                 <div className="col-4 d-flex align-items-center">
-                  <BiSolidUserCircle
+                  <div>
+                    {userData && userData.usuProfilePhoto !== null ? (
+                      <img
+                        src={`data:image/png;base64, ${userData.usuProfilePhoto}`}
+                        alt="Perfil Actual"
+                        className="img-fluid  rounded-circle me-3"
+                        style={{ width: "40px", height: "40px" }}
+                      />
+                    ) : (
+                      <BiSolidUserCircle
+                        style={{ width: "40px", height: "40px" }}
+                      />
+                    )}
+                  </div>
+
+                  {/* <BiSolidUserCircle
                     style={{ width: "40px", height: "40px" }}
-                  />
+                  /> */}
                   <p className="m-0 fs-5">
                     {"   "}
                     Bienvenid@,{" "}

@@ -18,6 +18,12 @@ export function NavMenu() {
   const { authenticated, user, handleLogout } = useContext(MyContext);
   const navigate = useNavigate();
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   const handleLogoutClick = () => {
     handleLogout();
     navigate("/signin");
@@ -42,7 +48,47 @@ export function NavMenu() {
                     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                   ] === "2" && (
                     <>
-                      <li className="nav-item">
+                      <div className="dropdown">
+                        <button
+                          className="btn bg-dark dropdown-toggle text-white"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                          onClick={toggleDropdown}
+                          style={{ fontSize: "13px" }}
+                        >
+                          Mi cuenta
+                        </button>
+                        <div
+                          className={`dropdown-menu ${isOpen ? "show" : ""}`}
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <Link
+                            className="dropdown-item"
+                            to="/perfilUsuario"
+                            style={{ fontSize: "13px" }}
+                          >
+                            Dashboard
+                          </Link>
+                          <Link
+                            className="dropdown-item"
+                            to={`/cuentaUsuario/${user["UserId"]}`}
+                            style={{ fontSize: "13px" }}
+                          >
+                            Perfil
+                          </Link>
+                          <Link
+                            className="dropdown-item text-danger"
+                            onClick={handleLogoutClick}
+                            style={{ fontSize: "13px" }}
+                          >
+                            Cerrar Sesión
+                          </Link>
+                        </div>
+                      </div>
+                      {/* <li className="nav-item">
                         <Link
                           className="nav-link"
                           to="/perfilUsuario"
@@ -59,7 +105,7 @@ export function NavMenu() {
                         >
                           UserAccount
                         </Link>
-                      </li>
+                      </li> */}
                     </>
                   )}
                 {/* <li className="nav-item">
@@ -75,17 +121,62 @@ export function NavMenu() {
                   user[
                     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                   ] === "1" && (
-                    <li className="nav-item">
-                      <Link
-                        className="nav-link"
-                        to="/perfilAdmin"
-                        style={{ fontSize: "15px" }}
-                      >
-                        Perfil Admin
-                      </Link>
-                    </li>
+                    <>
+                      <div className="nav-item dropdown">
+                        <button
+                          className="btn bg-dark dropdown-toggle text-white"
+                          type="button"
+                          id="adminDropdown"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                          onClick={toggleDropdown}
+                          style={{ fontSize: "13px" }}
+                        >
+                          Admin
+                        </button>
+                        <div
+                          className={`dropdown-menu ${isOpen ? "show" : ""}`}
+                          aria-labelledby="adminDropdown"
+                        >
+                          <Link
+                            className="dropdown-item"
+                            to="/perfilAdmin"
+                            style={{ fontSize: "13px" }}
+                          >
+                            Perfil Admin
+                          </Link>
+                          <button
+                            className="dropdown-item btn btn-link text-danger"
+                            onClick={handleLogout}
+                            style={{ fontSize: "13px" }}
+                          >
+                            Cerrar Sesión
+                          </button>
+                        </div>
+                      </div>
+                      {/* <li className="nav-item">
+                        <Link
+                          className="nav-link"
+                          to="/perfilAdmin"
+                          style={{ fontSize: "15px" }}
+                        >
+                          Perfil Admin
+                        </Link>
+                      </li>
+
+                      <li className="nav-item">
+                        <button
+                          className="btn btn-link nav-link text-danger"
+                          onClick={handleLogoutClick}
+                          style={{ fontSize: "15px" }}
+                        >
+                          Cerrar Sesión
+                        </button>
+                      </li> */}
+                    </>
                   )}
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <button
                     className="btn btn-link nav-link text-danger"
                     onClick={handleLogoutClick}
@@ -93,7 +184,7 @@ export function NavMenu() {
                   >
                     Cerrar Sesión
                   </button>
-                </li>
+                </li> */}
               </>
             ) : (
               <>

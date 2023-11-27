@@ -67,7 +67,10 @@ export function Home() {
             Crea una lista de deseos y compartela con tus familiares y amigos.
           </h4>
           {/* <button type="submit" class="btn btn-primary" style={{ width: '200px' }}>Crear</button>*/}
-          {authenticated ? (
+          {authenticated &&
+          user[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ] === "2" ? (
             <Link
               className="text-dark text-decoration-none"
               to="/perfilUsuario"
@@ -77,7 +80,7 @@ export function Home() {
               </b>
             </Link>
           ) : (
-            <Link className="text-dark text-decoration-none" to="/signup">
+            <Link className="text-dark text-decoration-none" to="/perfilAdmin">
               <b className="btn btn-outline-dark" style={{ fontSize: "13px" }}>
                 Crear lista
               </b>
