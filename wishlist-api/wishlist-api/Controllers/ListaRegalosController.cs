@@ -165,21 +165,35 @@ namespace wishlist_api.Controllers
                 }
 
                 var listaRegalos = await _context.ListaRegalos
-                    .Include(x => x.LisRegUsuario!.UsuRolNavigation)
+                    .Include(x => x.LisRegUsuario)
                     .Include(x => x.LisRegLisPriv)
-                    .Where(lista => lista.LisRegLisPrivId == 1)
+                    //.Where(lista => lista.LisRegLisPrivId == 1)
+                    .Select(lista => new ListaRegaloViewModel
+                    {
+                        LisRegId = lista.LisRegId,
+                        LisRegNombre = lista.LisRegNombre,
+                        LisRegFecCreacion = lista.LisRegFecCreacion,
+                        LisRegUsuarioId = lista.LisRegUsuarioId,
+                        LisRegUsuario = lista.LisRegUsuario.UsuNombre,
+                        LisRegUsuarioApellido = lista.LisRegUsuario.UsuApellidos,
+                        LisRegUsuarioRolId = lista.LisRegUsuario.UsuRol,
+                        LisRegUsuarioRol = lista.LisRegUsuario.UsuRolNavigation.RolNombre,
+                        LisRegLisPrivId = lista.LisRegLisPrivId,
+                        LisRegLisPriv = lista.LisRegLisPriv.LisPrivPrivacidad,
+                        LisRegEstatus = lista.LisRegEstatus
+                    })
                     .ToListAsync();
 
                 // Configura las opciones de serialización para manejar referencias circulares
-                var options = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                    MaxDepth = 64, // Ajusta según sea necesario para la profundidad de tu objeto
+                //var options = new JsonSerializerOptions
+                //{
+                //    ReferenceHandler = ReferenceHandler.Preserve,
+                //    MaxDepth = 64, // Ajusta según sea necesario para la profundidad de tu objeto
 
-                };
+                //};
 
                 // Serializa los datos utilizando las opciones configuradas
-                var jsonResult = JsonSerializer.Serialize(listaRegalos, options);
+                var jsonResult = JsonSerializer.Serialize(listaRegalos);
 
                 // Devuelve el resultado serializado
                 return Content(jsonResult, "application/json");
@@ -349,6 +363,35 @@ namespace wishlist_api.Controllers
 
                 // Actualizar el campo LisRegEstatus a "I" (inactivo)
                 articulo.LisRegEstatus = "I";
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Maneja excepciones según tus necesidades
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        // Activar lista
+        [HttpPut("Activar/{id}")]
+        [Authorize]
+        public async Task<IActionResult> ActivarLista(int id)
+        {
+            try
+            {
+                var articulo = await _context.ListaRegalos
+                    .FirstOrDefaultAsync(a => a.LisRegId == id && a.LisRegEstatus == "I");
+
+                if (articulo == null)
+                {
+                    return NotFound();
+                }
+
+                // Actualizar el campo LisRegEstatus a "I" (inactivo)
+                articulo.LisRegEstatus = "A";
 
                 await _context.SaveChangesAsync();
 

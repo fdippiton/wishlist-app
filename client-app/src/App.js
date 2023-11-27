@@ -26,13 +26,45 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setAuthenticated(true);
-      setUser(decoded);
-    }
+    const checkToken = () => {
+      const token = localStorage.getItem("accessToken");
+
+      if (token) {
+        const decoded = jwtDecode(token);
+        const expirationTime = decoded.exp * 1000; // Convertir la expiración a milisegundos
+        const currentTime = Date.now();
+
+        if (currentTime < expirationTime) {
+          // Token válido, el usuario está autenticado
+          setAuthenticated(true);
+          setUser(decoded);
+        } else {
+          // Token expirado, realizar acciones necesarias (por ejemplo, redirigir al inicio de sesión)
+          const shouldContinueSession = window.confirm(
+            "Tu sesión ha expirado. ¿Deseas continuar la sesión?"
+          );
+
+          if (shouldContinueSession) {
+            setAuthenticated(true);
+            setUser(decoded);
+          } else {
+            handleLogout(); // Redirigir al inicio de sesión o realizar otras acciones
+          }
+        }
+      }
+    };
+
+    checkToken();
   }, []);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("accessToken");
+  //   if (token) {
+  //     const decoded = jwtDecode(token);
+  //     setAuthenticated(true);
+  //     setUser(decoded);
+  //   }
+  // }, []);
 
   const handleLogin = (token) => {
     localStorage.setItem("accessToken", token);

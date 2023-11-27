@@ -37,7 +37,21 @@ export function NavMenu() {
           <ul className="navbar-nav ms-auto">
             {authenticated ? (
               <>
-                <li className="nav-item">
+                {user &&
+                  user[
+                    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                  ] === "2" && (
+                    <li className="nav-item">
+                      <Link
+                        className="nav-link"
+                        to="/perfilUsuario"
+                        style={{ fontSize: "15px" }}
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                  )}
+                {/* <li className="nav-item">
                   <Link
                     className="nav-link"
                     to="/perfilUsuario"
@@ -45,7 +59,7 @@ export function NavMenu() {
                   >
                     Dashboard
                   </Link>
-                </li>
+                </li> */}
                 {user &&
                   user[
                     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
