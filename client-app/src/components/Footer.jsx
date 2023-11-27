@@ -7,10 +7,11 @@ export function Footer() {
     textAlign: "center",
     padding: "10px 0",
     fontSize: "13px",
+    marginTop: "12px",
   };
 
   return (
-    <footer className=" text-center py-3" style={styles}>
+    <footer className=" text-center py-3 " style={styles}>
       <div className="container">
         <p>&copy; 2023 Wishlist</p>
       </div>

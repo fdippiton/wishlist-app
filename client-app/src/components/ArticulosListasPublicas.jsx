@@ -11,6 +11,7 @@ import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { MdEditSquare } from "react-icons/md";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { MdAddBox } from "react-icons/md";
+import { IoArrowBackSharp } from "react-icons/io5";
 
 export function ArticulosListasPublicas() {
   const [listasRegalo, setListasRegalo] = useState(null);
@@ -77,7 +78,13 @@ export function ArticulosListasPublicas() {
         <div className="row">
           <div className="col-8">
             <h4 className="d-flex align-items-center">
-              {" "}
+              <Link
+                className=" me-2"
+                style={{ fontSize: "14px" }}
+                to={`/listasUsuario/${listasRegalo.LisRegUsuarioId}`}
+              >
+                <IoArrowBackSharp style={{ width: "30px", height: "30px" }} />{" "}
+              </Link>{" "}
               <FaGift />{" "}
               <span className="ms-2">{listasRegalo.LisRegNombre}</span>
             </h4>

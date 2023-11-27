@@ -15,6 +15,10 @@ export function PerfilUsuario() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
+  var styles = {
+    marginBotton: "40px",
+  };
+
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!authenticated) {
@@ -84,12 +88,12 @@ export function PerfilUsuario() {
   };
 
   return (
-    <div className="container mt-3">
-      <div className="row">
+    <div className="container mt-3 ">
+      <div className="row" style={styles}>
         <div>
           {authenticated && user ? (
             <div>
-              <div className="row d-flex justify-content-between mt-3">
+              <div className="row d-flex justify-content-between mt-3 mb-5">
                 <div className="col-4 d-flex align-items-center">
                   <BiSolidUserCircle
                     style={{ width: "40px", height: "40px" }}
@@ -187,7 +191,7 @@ export function PerfilUsuario() {
                     ))}
                 </div>
 
-                <div className="row d-flex justify-content-center mt-3">
+                <div className="row d-flex justify-content-center mt-3 mb-5">
                   <div className="col-10 d-flex justify-content-center">
                     <Link
                       className="btn btn-outline-dark"

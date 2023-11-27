@@ -80,61 +80,64 @@ export function ListasPublicas() {
         </div>
       </div>
 
-      <div className="row d-flex justify-content-center">
-        {listasRegalos &&
-          listasRegalos.map((listaRegalos) => (
-            <div className="col-10 mb-2 " key={listaRegalos.LisRegId}>
-              <div className="card">
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-9">
-                      <div className="d-flex align-items-center">
-                        <h4>
-                          {" "}
-                          {listaRegalos.LisRegLisPriv &&
-                          listaRegalos.LisRegLisPriv === "Publica" ? (
-                            <MdOutlinePublic />
-                          ) : (
-                            <RiGitRepositoryPrivateFill />
-                          )}
-                        </h4>
-                        <h6 className="card-title d-flex m-0 ps-2">
-                          {listaRegalos.LisRegNombre}
+      {listasRegalos && listasRegalos.length > 0 ? (
+        <div className="row d-flex justify-content-center">
+          {listasRegalos &&
+            listasRegalos.map((listaRegalos) => (
+              <div className="col-10 mb-2 " key={listaRegalos.LisRegId}>
+                <div className="card">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-9">
+                        <div className="d-flex align-items-center">
+                          <h4>
+                            {" "}
+                            {listaRegalos.LisRegLisPriv &&
+                            listaRegalos.LisRegLisPriv === "Publica" ? (
+                              <MdOutlinePublic />
+                            ) : (
+                              <RiGitRepositoryPrivateFill />
+                            )}
+                          </h4>
+                          <h6 className="card-title d-flex m-0 ps-2">
+                            {listaRegalos.LisRegNombre}
+                          </h6>
+                        </div>
+                        <h6 style={{ fontSize: "13px" }}>
+                          Creada{" "}
+                          {formatDateString(listaRegalos.LisRegFecCreacion)}
                         </h6>
                       </div>
-                      <h6 style={{ fontSize: "13px" }}>
-                        Creada{" "}
-                        {formatDateString(listaRegalos.LisRegFecCreacion)}
-                      </h6>
-                    </div>
-                    <div className="col-3 d-flex align-items-center justify-content-end">
-                      <Link
-                        className="btn btn-outline-dark"
-                        to={`/articulosListasPublicas/${listaRegalos.LisRegId}`}
-                        style={{ fontSize: "13px" }}
-                      >
-                        Ver articulos
-                      </Link>
+                      <div className="col-3 d-flex align-items-center justify-content-end">
+                        <Link
+                          className="btn btn-outline-dark"
+                          to={`/articulosListasPublicas/${listaRegalos.LisRegId}`}
+                          style={{ fontSize: "13px" }}
+                        >
+                          Ver articulos
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        {/* {listasRegalos && listasRegalos.length === 0 && (
+            ))}
+          {/* {listasRegalos && listasRegalos.length === 0 && (
           <div className="alert alert-danger text-center mt-3" role="alert">
             <h5>
               {`${usuario.usuarioNombre} ${usuario.usuarioApellido} no tiene listas públicas`}
             </h5>
           </div>
         )} */}
-
-        {mensaje && (
-          <div className="alert alert-danger text-center mt-3" role="alert">
-            {mensaje}
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="alert alert-danger text-center mt-3" role="alert">
+          <h5 className="mb-3">
+            {usuario.usuarioNombre} {usuario.usuarioApellido} no tiene listas
+            publicas.
+          </h5>
+        </div>
+      )}
     </div>
   );
 }
