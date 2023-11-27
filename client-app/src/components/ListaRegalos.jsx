@@ -152,7 +152,7 @@ export function ListaRegalos() {
         </div>
       )}
 
-      <div className="row d-flex mt-4 justify-content-center mb-5">
+      <div className="row d-flex mt-4 justify-content-center mb-2">
         {/* Listar articulos de la lista */}
 
         <div className="col-6">

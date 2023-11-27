@@ -137,14 +137,31 @@ namespace wishlist_api.Controllers
         }
 
         // PUT: api/Usuarios/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [Produces("application/json")]
+        [Consumes("multipart/form-data")]
+        [HttpPut("modificarUsuario/{id}")]
         [Authorize]
-        public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(int id, [FromForm] Usuario usuario)
         {
             if (id != usuario.UsuId)
             {
                 return BadRequest();
+            }
+
+            //if (usuario != null)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+            // Check if a new profile image is uploaded
+            if (Request.Form.Files.Count > 0)
+            {
+                var file = Request.Form.Files[0];
+                if (file != null && file.Length > 0)
+                {
+                    // Save the file content as bytes and update the user's profile photo bytes
+                    usuario.UsuProfilePhoto = await SaveProfileImage(file);
+                }
             }
 
             _context.Entry(usuario).State = EntityState.Modified;
@@ -167,6 +184,46 @@ namespace wishlist_api.Controllers
 
             return NoContent();
         }
+
+        private async Task<byte[]> SaveProfileImage(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
+
+        //[HttpPut("modificarUsuario/{id}")]
+        //[Authorize]
+        //public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+        //{
+        //    if (id != usuario.UsuId)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    _context.Entry(usuario).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!UsuarioExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
 
         // POST: api/Usuarios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

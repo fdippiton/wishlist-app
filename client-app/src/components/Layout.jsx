@@ -7,7 +7,7 @@ export function Layout(props) {
   return (
     <div>
       {/* <NavMenu /> */}
-      <Container className="container" tag="main">
+      <Container className="container" tag="main" style={{ minHeight: "93vh" }}>
         {props.children}
       </Container>
       <Footer></Footer>
