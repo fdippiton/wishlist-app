@@ -13,7 +13,7 @@ export function Footer() {
   return (
     <footer className=" text-center py-3 " style={styles}>
       <div className="container">
-        <p>&copy; 2023 Wishlist</p>
+        <p className="m-0">&copy; 2023 Wishlist</p>
       </div>
     </footer>
   );

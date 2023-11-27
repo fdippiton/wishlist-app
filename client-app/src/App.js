@@ -18,6 +18,7 @@ import EditarArticulo from "./components/EditarArticulo";
 import EditarListaRegalos from "./components/EditarListaRegalos";
 import { ListasPublicas } from "./components/ListasPublicas";
 import { ArticulosListasPublicas } from "./components/ArticulosListasPublicas";
+import { UserAccount } from "./components/UserAccount";
 
 export const MyContext = createContext();
 
@@ -69,6 +70,8 @@ const App = () => {
   const handleLogin = (token) => {
     localStorage.setItem("accessToken", token);
     const decoded = jwtDecode(token);
+    console.log(decoded);
+
     setAuthenticated(true);
     setUser(decoded);
   };
@@ -114,6 +117,9 @@ const App = () => {
               path="/articulosListasPublicas/:listaRegId"
               element=<ArticulosListasPublicas />
             />
+            <Route path="/admin/lista-usuarios" element={<PerfilAdmin />} />
+            <Route path="/admin/lista-deseos" element={<PerfilAdmin />} />
+            <Route path="/cuentaUsuario/:usuarioId" element=<UserAccount /> />
           </Routes>
           {/* <Footer /> */}
         </Layout>

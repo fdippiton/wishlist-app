@@ -84,6 +84,41 @@ namespace wishlist_api.Controllers
         }
 
         // GET: api/Usuarios/5
+        [HttpGet("listaUsuarios")]
+        public async Task<ActionResult<Usuario>> GetUsuarios()
+        {
+            if (_context.Usuarios == null)
+            {
+                return NotFound();
+            }
+            var usuarios = await _context.Usuarios
+                .Include(x => x.UsuRolNavigation)
+                .Select(usuario => new UsuariosViewModel
+                {
+                    UsuId = usuario.UsuId,
+                    UsuNombre = usuario.UsuNombre,
+                    UsuApellidos = usuario.UsuApellidos,
+                    UsuCorreo = usuario.UsuCorreo,
+                    UsuContrasena = usuario.UsuContrasena,
+                    UsuProfilePhoto = usuario.UsuProfilePhoto,
+                    UsuRol = usuario.UsuRol,
+                    UsuEstatus = usuario.UsuEstatus,
+                })
+                .ToListAsync();
+
+            if (usuarios == null)
+            {
+                return NotFound();
+            }
+
+            var jsonResult = JsonSerializer.Serialize(usuarios);
+
+            // Devuelve el resultado serializado
+            return Content(jsonResult, "application/json");
+        }
+
+
+        // GET: api/Usuarios/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {

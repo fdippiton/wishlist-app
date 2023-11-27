@@ -41,15 +41,26 @@ export function NavMenu() {
                   user[
                     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                   ] === "2" && (
-                    <li className="nav-item">
-                      <Link
-                        className="nav-link"
-                        to="/perfilUsuario"
-                        style={{ fontSize: "15px" }}
-                      >
-                        Dashboard
-                      </Link>
-                    </li>
+                    <>
+                      <li className="nav-item">
+                        <Link
+                          className="nav-link"
+                          to="/perfilUsuario"
+                          style={{ fontSize: "15px" }}
+                        >
+                          Dashboard
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          className="nav-link"
+                          to={`/cuentaUsuario/${user["UserId"]}`}
+                          style={{ fontSize: "15px" }}
+                        >
+                          UserAccount
+                        </Link>
+                      </li>
+                    </>
                   )}
                 {/* <li className="nav-item">
                   <Link

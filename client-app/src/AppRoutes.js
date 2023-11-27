@@ -7,6 +7,7 @@ import PerfilAdmin from "./components/PerfilAdmin";
 import React from "react";
 import { ListaRegalos } from "./components/ListaRegalos";
 import CrearArticulo from "./components/CrearArticulo";
+import { UserAccount } from "./components/UserAccount";
 
 const AppRoutes = [
   {
@@ -58,6 +59,11 @@ const AppRoutes = [
   {
     path: "/articulosListasPublicas/:listaRegId",
     element: <ArticulosListasPublicas />,
+  },
+  ,
+  {
+    path: "/cuentaUsuario/:usuarioId",
+    element: <UserAccount />,
   },
 ];
 
