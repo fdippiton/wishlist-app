@@ -30,7 +30,7 @@ export function NavMenu() {
   };
 
   return (
-    <nav className="navbar navbar-expand navbar-light bg-light">
+    <nav className="navbar navbar-expand navbar-light bg-light mt-3">
       <div className="container">
         <Link
           className="navbar-brand d-flex align-items-center"

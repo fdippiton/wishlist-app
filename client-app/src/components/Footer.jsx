@@ -3,7 +3,7 @@ export function Footer() {
     // position: "fixed",
     bottom: 0,
     width: "100%",
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#D9D2E9",
     textAlign: "center",
     padding: "10px 0",
     fontSize: "13px",

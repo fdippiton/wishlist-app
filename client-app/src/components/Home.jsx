@@ -64,7 +64,7 @@ export function Home() {
         <div className="col-6 d-flex flex-column justify-content-center">
           <h1>Encuentra el regalo perfecto para tus seres queridos!</h1>
           <h4 className="mb-4">
-            Crea una lista de deseos y compartela con tus familiares y amigos.
+            Crea listas de deseos y compartelas con tus familiares y amigos.
           </h4>
           {/* <button type="submit" class="btn btn-primary" style={{ width: '200px' }}>Crear</button>*/}
           {authenticated &&
@@ -92,6 +92,17 @@ export function Home() {
         </div>
       </div>
 
+      <div
+        style={{
+          backgroundColor: "#e5e5f7",
+          opacity: "1",
+          backgroundImage:
+            "radial-gradient(#787efd 1.7000000000000002px, #e5e5f7 1.7000000000000002px)",
+          backgroundSize: "34px 34px",
+          height: "100px",
+          width: "100%",
+        }}
+      ></div>
       <div className="row d-flex justify-content-center mt-5">
         <div className="col-6">
           <form className="text-center" onSubmit={handleSearch}>
