@@ -1,12 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { jwtDecode } from "jwt-decode";
 import { MyContext } from "../App";
-import { useNavigate, Link, useLocation, useParams } from "react-router-dom";
-import { BiSolidUserCircle } from "react-icons/bi";
-import { MdOutlinePublic } from "react-icons/md";
-import { RiGitRepositoryPrivateFill } from "react-icons/ri";
-import { FaExchangeAlt } from "react-icons/fa";
-import { FaRegUserCircle } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function UserAccount() {
   const [usuario, setUsuario] = useState({});
@@ -15,7 +9,6 @@ export function UserAccount() {
   const { user, authenticated, handleLogout } = useContext(MyContext);
   const { usuarioId } = useParams();
 
-  // Initialize formDataUsuario state
   const [formDataUsuario, setFormDataUsuario] = useState({
     usuNombre: "",
     usuApellidos: "",
@@ -104,14 +97,6 @@ export function UserAccount() {
       console.error("Error in request:", error);
     }
   };
-
-  //   const handleChange = (e) => {
-  //     const { name, value } = e.target;
-  //     setUsuario((prevUser) => ({
-  //       ...prevUser,
-  //       [name]: value,
-  //     }));
-  //   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;

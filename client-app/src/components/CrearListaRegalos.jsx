@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 export function CrearListaRegalos() {
   const navigate = useNavigate();
@@ -9,8 +10,8 @@ export function CrearListaRegalos() {
   const [formData, setFormData] = useState({
     LisRegNombre: "",
     LisRegFecCreacion: "",
-    LisRegUsuarioId: parseInt(usuarioId, 10), // Debes proporcionar el usuario correcto
-    LisRegLisPrivId: 0, // Debes proporcionar el ID correcto
+    LisRegUsuarioId: parseInt(usuarioId, 10),
+    LisRegLisPrivId: 0,
     LisRegEstatus: "A",
   });
 
@@ -47,7 +48,6 @@ export function CrearListaRegalos() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
 
     try {
       const response = await fetch("http://localhost:5109/api/listaRegalos", {
@@ -61,9 +61,7 @@ export function CrearListaRegalos() {
       if (response.ok) {
         console.log("Guardado exitosamente:", response);
         navigate(`/perfilUsuario`);
-        console.log(formData);
       } else {
-        // Manejar otros códigos de estado según tus necesidades
         console.error("Error:", response.status);
       }
     } catch (error) {
@@ -72,51 +70,66 @@ export function CrearListaRegalos() {
   };
 
   return (
-    <div className="row d-flex justify-content-center">
-      <div className="col-6">
-        <h3 className="mt-5 mb-5 text-center">Crear Lista de Deseos</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <input
-              className="form-control opacity-75"
-              type="text"
-              placeholder="Nombre de la Lista"
-              name="LisRegNombre"
-              value={formData.LisRegNombre}
-              onChange={handleInputChange}
-              style={{ fontSize: "13px" }}
-            />
-          </div>
-          <div className="mb-3">
-            <select
-              className="form-control opacity-75"
-              name="LisRegLisPrivId"
-              value={formData.LisRegLisPrivId}
-              onChange={handleInputChange}
-              style={{ fontSize: "13px" }}
-            >
-              <option value="">-- Privacidad --</option>
-              {privacidadDropdown.map((opcion) => (
-                <option
-                  className="text-black"
-                  key={opcion.lisPrivId}
-                  value={opcion.lisPrivId}
-                >
-                  {opcion.lisPrivPrivacidad}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-3 text-center mt-3">
-            <button
-              className="btn btn-dark"
-              type="submit"
-              style={{ fontSize: "13px" }}
-            >
-              Crear Lista
-            </button>
-          </div>
-        </form>
+    <div className="row d-flex  justify-content-center">
+      {/* <div className="row">
+        <div className=" pt-3">
+          {" "}
+          <Link
+            className="btn me-2 text-decoration-none text-white bg-dark"
+            to="/perfilusuario"
+            style={{ fontSize: "13px" }}
+          >
+            Dashboard
+          </Link>
+        </div>
+      </div> */}
+
+      <div className="row d-flex justify-content-center">
+        <div className="col-6">
+          <h3 className="mt-5 mb-5 text-center">Crear Lista de Deseos</h3>
+          <form className="text-center" onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <input
+                className="form-control opacity-75"
+                type="text"
+                placeholder="Nombre de la Lista"
+                name="LisRegNombre"
+                value={formData.LisRegNombre}
+                onChange={handleInputChange}
+                style={{ fontSize: "13px" }}
+              />
+            </div>
+            <div className="mb-3">
+              <select
+                className="form-control opacity-75"
+                name="LisRegLisPrivId"
+                value={formData.LisRegLisPrivId}
+                onChange={handleInputChange}
+                style={{ fontSize: "13px" }}
+              >
+                <option value="">-- Privacidad --</option>
+                {privacidadDropdown.map((opcion) => (
+                  <option
+                    className="text-black"
+                    key={opcion.lisPrivId}
+                    value={opcion.lisPrivId}
+                  >
+                    {opcion.lisPrivPrivacidad}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-3 text-center mt-3">
+              <button
+                className="btn btn-dark"
+                type="submit"
+                style={{ fontSize: "13px" }}
+              >
+                Crear lista
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

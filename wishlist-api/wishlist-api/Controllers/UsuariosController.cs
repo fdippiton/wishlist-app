@@ -24,6 +24,7 @@ namespace wishlist_api.Controllers
             _context = context;
         }
 
+        // Busqueda de usuarios en searchbar
         // GET: api/Usuarios
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios([FromQuery] string searchQuery)
@@ -35,7 +36,7 @@ namespace wishlist_api.Controllers
                     return NotFound();
                 }
 
-                // Apply search filter if a search query is provided
+                // Aplicar filtro de búsqueda si se proporciona una consulta de búsqueda
                 var usuariosQuery = _context.Usuarios
                     .Include(x => x.UsuRolNavigation)
                     .Where(x => x.UsuEstatus == "A");
@@ -60,7 +61,6 @@ namespace wishlist_api.Controllers
                     })
                     .ToListAsync();
                 
-                // return Ok(usuarios);
                 // Serializa los datos utilizando las opciones configuradas
                 var jsonResult = JsonSerializer.Serialize(usuarios);
 
@@ -83,6 +83,7 @@ namespace wishlist_api.Controllers
             }
         }
 
+        // Obtener todos los usuarios para lista admin
         // GET: api/Usuarios/5
         [HttpGet("listaUsuarios")]
         public async Task<ActionResult<Usuario>> GetUsuarios()
@@ -118,6 +119,7 @@ namespace wishlist_api.Controllers
         }
 
 
+        // Obtener un usuario por id
         // GET: api/Usuarios/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
@@ -132,10 +134,10 @@ namespace wishlist_api.Controllers
             {
                 return NotFound();
             }
-
             return usuario;
         }
 
+        // Actualizar usuario
         // PUT: api/Usuarios/5
         [Produces("application/json")]
         [Consumes("multipart/form-data")]
@@ -148,18 +150,13 @@ namespace wishlist_api.Controllers
                 return BadRequest();
             }
 
-            //if (usuario != null)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
-            // Check if a new profile image is uploaded
+            // Comprueba si se ha subido una nueva imagen de perfil
             if (Request.Form.Files.Count > 0)
             {
                 var file = Request.Form.Files[0];
                 if (file != null && file.Length > 0)
                 {
-                    // Save the file content as bytes and update the user's profile photo bytes
+                    // Guarde el contenido del archivo como bytes y actualice los bytes de la foto de perfil del usuario.
                     usuario.UsuProfilePhoto = await SaveProfileImage(file);
                 }
             }
@@ -181,7 +178,6 @@ namespace wishlist_api.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -194,39 +190,8 @@ namespace wishlist_api.Controllers
             }
         }
 
-
-        //[HttpPut("modificarUsuario/{id}")]
-        //[Authorize]
-        //public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
-        //{
-        //    if (id != usuario.UsuId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(usuario).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UsuarioExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
+        // Registrar un nuevo usuario
         // POST: api/Usuarios
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
@@ -240,6 +205,7 @@ namespace wishlist_api.Controllers
             return CreatedAtAction("GetUsuario", new { id = usuario.UsuId }, usuario);
         }
 
+        // Eliminar usuario
         // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
@@ -263,6 +229,66 @@ namespace wishlist_api.Controllers
         private bool UsuarioExists(int id)
         {
             return (_context.Usuarios?.Any(e => e.UsuId == id)).GetValueOrDefault();
+        }
+
+
+        // Inactivar/eliminar usuario
+        [HttpPut("Inactivar/{id}")]
+        [Authorize]
+        public async Task<IActionResult> InactivarUsuario(int id)
+        {
+            try
+            {
+                var usuario = await _context.Usuarios
+                    .FirstOrDefaultAsync(a => a.UsuId == id && a.UsuEstatus == "A");
+
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                // Actualizar el campo UsuEstatus a "I" (inactivo)
+                usuario.UsuEstatus = "I";
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Maneja excepciones según tus necesidades
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+
+        // Activar usuario
+        [HttpPut("Activar/{id}")]
+        [Authorize]
+        public async Task<IActionResult> ActivarUsuario(int id)
+        {
+            try
+            {
+                var usuario = await _context.Usuarios
+                    .FirstOrDefaultAsync(a => a.UsuId == id && a.UsuEstatus == "I");
+
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                // Actualizar el campo UsuEstatus a "I" (inactivo)
+                usuario.UsuEstatus = "A";
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Maneja excepciones según tus necesidades
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
     }
 }

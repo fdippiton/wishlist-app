@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import { jwtDecode } from "jwt-decode";
 import { MyContext } from "../App";
 import { useNavigate, Link } from "react-router-dom";
 import { BiSolidUserCircle } from "react-icons/bi";
@@ -88,7 +87,7 @@ export function PerfilUsuario() {
 
   const inactivarLista = async (listaRegId) => {
     try {
-      // Verifica nuevamente la autenticación antes de realizar la solicitud
+      // Verificar nuevamente la autenticación antes de realizar la solicitud
       if (authenticated) {
         const response = await fetch(
           `http://localhost:5109/api/listaRegalos/Inactivar/${listaRegId}`,
@@ -103,7 +102,6 @@ export function PerfilUsuario() {
 
         if (response.ok) {
           console.log(`Lista con ID ${listaRegId} inactivado exitosamente.`);
-          // Puedes realizar otras acciones después de inactivar el artículo
 
           setListasRegalos((prevListasRegalos) =>
             prevListasRegalos.filter((lista) => lista.LisRegId !== listaRegId)
@@ -140,9 +138,6 @@ export function PerfilUsuario() {
                     )}
                   </div>
 
-                  {/* <BiSolidUserCircle
-                    style={{ width: "40px", height: "40px" }}
-                  /> */}
                   <p className="m-0 fs-5">
                     {"   "}
                     Bienvenid@,{" "}
@@ -259,7 +254,6 @@ export function PerfilUsuario() {
             <p>No has iniciado sesión.</p>
           )}
         </div>
-        {/* <button onClick={handleLogout}>Cerrar Sesión</button> */}
       </div>
     </div>
   );

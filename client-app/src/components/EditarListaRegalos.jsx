@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { MyContext } from "../App";
 
 function RditarListaRegalos() {
-  //   const { listaId } = useParams();
   const { listaRegId } = useParams();
   const { user, authenticated } = useContext(MyContext);
   const [ListaRegalo, setListaRegalo] = useState();
@@ -26,7 +25,6 @@ function RditarListaRegalos() {
 
   useEffect(() => {
     if (!authenticated) {
-      // Redirect to login if not authenticated
       navigate("/signin");
     }
   }, [authenticated, navigate]);
@@ -42,10 +40,8 @@ function RditarListaRegalos() {
         const listaPrivacidadResponse = await response1.json();
 
         setprivacidadDropdown(listaPrivacidadResponse);
-        console.log(listaPrivacidadResponse);
 
         if (authenticated) {
-          // Fetch user-specific data using user.UserId and token
           try {
             const response2 = await fetch(
               `http://localhost:5109/api/listaRegalos/ById/${listaRegId}`,
@@ -92,10 +88,7 @@ function RditarListaRegalos() {
     event.preventDefault();
 
     try {
-      //   console.log(formData);
-
       console.log("Request Payload:", JSON.stringify(formData));
-      // Realiza la solicitud POST al servidor para editar el artículo
 
       if (authenticated) {
         const listaResponse = await fetch(
@@ -132,7 +125,6 @@ function RditarListaRegalos() {
       }
     } catch (error) {
       console.error("Error al enviar los datos:", error);
-      // Puedes manejar errores o mostrar un mensaje de error aquí
     }
   };
 
@@ -142,7 +134,6 @@ function RditarListaRegalos() {
         <h3 className="mt-5 mb-5 text-center">Editar lista de deseos</h3>
         <form className="mt-4">
           <div className="mb-3">
-            {/* <label className="form-label">Nombre del Artículo:</label> */}
             <input
               type="text"
               className="form-control opacity-75"

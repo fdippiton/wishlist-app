@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import Signin from "./components/Signin";
@@ -7,11 +7,10 @@ import { Signup } from "./components/Signup";
 import { PerfilUsuario } from "./components/PerfilUsuario";
 import PerfilAdmin from "./components/PerfilAdmin";
 import "./custom.css";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import { CrearListaRegalos } from "./components/CrearListaRegalos";
 import { jwtDecode } from "jwt-decode";
 import { NavMenu } from "./components/NavMenu";
-import { Footer } from "./components/Footer";
 import { ListaRegalos } from "./components/ListaRegalos";
 import CrearArticulo from "./components/CrearArticulo";
 import EditarArticulo from "./components/EditarArticulo";
@@ -48,6 +47,16 @@ const App = () => {
           if (shouldContinueSession) {
             setAuthenticated(true);
             setUser(decoded);
+
+            if (
+              user[
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"
+              ] == 1
+            ) {
+              window.location.href = "/perfilAdmin";
+            } else {
+              window.location.href = "/perfilUsuario";
+            }
           } else {
             handleLogout(); // Redirigir al inicio de sesión o realizar otras acciones
           }
@@ -58,15 +67,7 @@ const App = () => {
     checkToken();
   }, []);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("accessToken");
-  //   if (token) {
-  //     const decoded = jwtDecode(token);
-  //     setAuthenticated(true);
-  //     setUser(decoded);
-  //   }
-  // }, []);
-
+  /* ------------------------------ Manejar login ----------------------------- */
   const handleLogin = (token) => {
     localStorage.setItem("accessToken", token);
     const decoded = jwtDecode(token);
@@ -76,6 +77,7 @@ const App = () => {
     setUser(decoded);
   };
 
+  /* ------------------------ Manejar cierre de sesion ------------------------ */
   const handleLogout = () => {
     setAuthenticated(false);
     setUser(null);
@@ -121,7 +123,6 @@ const App = () => {
             <Route path="/admin/lista-deseos" element={<PerfilAdmin />} />
             <Route path="/cuentaUsuario/:usuarioId" element=<UserAccount /> />
           </Routes>
-          {/* <Footer /> */}
         </Layout>
       </BrowserRouter>
     </MyContext.Provider>

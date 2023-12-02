@@ -50,7 +50,6 @@ namespace wishlist_api.Controllers
         }
 
         // PUT: api/RegaloEstatus/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRegaloEstatus(int id, RegaloEstatus regaloEstatus)
         {
@@ -81,7 +80,6 @@ namespace wishlist_api.Controllers
         }
 
         // POST: api/RegaloEstatus
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<RegaloEstatus>> PostRegaloEstatus(RegaloEstatus regaloEstatus)
         {

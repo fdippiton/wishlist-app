@@ -59,14 +59,6 @@ namespace wishlist_api.Controllers
                     })
                     .ToListAsync();
 
-                // Configura las opciones de serialización para manejar referencias circulares
-                //var options = new JsonSerializerOptions
-                //{
-                //    ReferenceHandler = ReferenceHandler.Preserve,
-                //    MaxDepth = 10, // Ajusta según sea necesario para la profundidad de tu objeto
-
-                //};
-
                 // Serializa los datos utilizando las opciones configuradas
                 var jsonResult = JsonSerializer.Serialize(listaRegalos);
 
@@ -123,14 +115,6 @@ namespace wishlist_api.Controllers
                     })
                     .ToListAsync();
 
-                // Configura las opciones de serialización para manejar referencias circulares
-                //var options = new JsonSerializerOptions
-                //{
-                //    ReferenceHandler = ReferenceHandler.Preserve,
-                //    MaxDepth = 10, // Ajusta según sea necesario para la profundidad de tu objeto
-
-                //};
-
                 // Serializa los datos utilizando las opciones configuradas
                 var jsonResult = JsonSerializer.Serialize(listaRegalos);
 
@@ -184,14 +168,6 @@ namespace wishlist_api.Controllers
                     })
                     .ToListAsync();
 
-                // Configura las opciones de serialización para manejar referencias circulares
-                //var options = new JsonSerializerOptions
-                //{
-                //    ReferenceHandler = ReferenceHandler.Preserve,
-                //    MaxDepth = 64, // Ajusta según sea necesario para la profundidad de tu objeto
-
-                //};
-
                 // Serializa los datos utilizando las opciones configuradas
                 var jsonResult = JsonSerializer.Serialize(listaRegalos);
 
@@ -214,6 +190,7 @@ namespace wishlist_api.Controllers
             }
         }
 
+        // Obtener una lista de regalos especifica
         // GET: api/ListaRegalos/5
         [HttpGet("ById/{id}")]
         public async Task<ActionResult<ListaRegalo>> GetListaRegalo(int id)
@@ -255,8 +232,8 @@ namespace wishlist_api.Controllers
            
         }
 
+        // Actualizar lista de regalo
         // PUT: api/ListaRegalos/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutListaRegalo(int id, ListaRegalo listaRegalo)
@@ -287,8 +264,9 @@ namespace wishlist_api.Controllers
             return NoContent();
         }
 
+
+        // Crear lista de regalos
         // POST: api/ListaRegalos
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ListaRegalo>> PostListaRegalo(ListaRegalo listaRegalo)
         {
@@ -347,6 +325,7 @@ namespace wishlist_api.Controllers
         }
 
 
+        // Inactivar/eliminar lista de regalos
         [HttpPut("Inactivar/{id}")]
         [Authorize]
         public async Task<IActionResult> InactivarLista(int id)
@@ -374,6 +353,7 @@ namespace wishlist_api.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
 
         // Activar lista
         [HttpPut("Activar/{id}")]

@@ -45,10 +45,8 @@ const Signin = () => {
         } else {
           navigate("/perfilUsuario");
         }
-        // Llama a la función proporcionada para manejar el inicio de sesión en el componente padre
       } else {
         console.error("Error al iniciar sesión");
-        // Maneja los errores del servidor
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);

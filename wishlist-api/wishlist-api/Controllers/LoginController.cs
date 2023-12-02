@@ -51,7 +51,7 @@ namespace wishlist_api.Controllers
         private Usuario Authenticate(LoginUser userLogin) {
         
             var currentUser = _context.Usuarios.FirstOrDefault(user => user.UsuCorreo == userLogin.UsuCorreo 
-                && user.UsuContrasena == userLogin.UsuContrasena);
+                && user.UsuContrasena == userLogin.UsuContrasena && user.UsuEstatus == "A");
 
             if (currentUser != null) {
 

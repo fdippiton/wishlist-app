@@ -24,8 +24,8 @@ namespace wishlist_api.Controllers
             _context = context;
         }
 
-        // GET: api/Articulos
         // Obtener los articulos pertenecientes a una lista especifica
+        // GET: api/Articulos
         [HttpGet("ByList/{listId}")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulos(int listId)
@@ -77,8 +77,8 @@ namespace wishlist_api.Controllers
             }
         }
 
-        // GET: api/Articulos
         // Obtener los articulos pertenecientes a una lista especifica publicas
+        // GET: api/Articulos
         [HttpGet("listaPublica/{listId}")]
         public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulosListaPublica(int listId)
         {
@@ -178,9 +178,7 @@ namespace wishlist_api.Controllers
         }
 
 
-
-
-
+        // Obtener un articulo espercifico
         //GET: api/Articulos/5
         [HttpGet("{id}")]
         [Authorize]
@@ -201,7 +199,6 @@ namespace wishlist_api.Controllers
         }
 
         // PUT: api/Articulos/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutArticulo(int id, [FromBody] Articulo articulo)
@@ -232,15 +229,12 @@ namespace wishlist_api.Controllers
             }
             catch 
             {
-                // Log the exception for debugging purposes
-                // logger.LogError($"An error occurred: {ex}");
-
                 return StatusCode(500, "An unexpected error occurred while processing the request.");
             }
         }
 
+
         // POST: api/Articulos
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Articulo>> PostArticulo(Articulo articulo)
         {
@@ -300,6 +294,7 @@ namespace wishlist_api.Controllers
             return (_context.Articulos?.Any(e => e.ArtId == id)).GetValueOrDefault();
         }
 
+        // Inactivar/Eliminar articulo
         [HttpPut("Inactivar/{id}")]
         [Authorize]
         public async Task<IActionResult> InactivarArticulo(int id)

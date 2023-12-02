@@ -1,17 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-  Collapse,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
-} from "reactstrap";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./NavMenu.css";
 import { MyContext } from "../App";
-import { jwtDecode } from "jwt-decode";
-import { BiSolidUserCircle } from "react-icons/bi";
 import { FaGift } from "react-icons/fa6";
 
 export function NavMenu() {
@@ -48,6 +38,13 @@ export function NavMenu() {
                     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                   ] === "2" && (
                     <>
+                      <Link
+                        className="dropdown-item me-4"
+                        to="/perfilUsuario"
+                        style={{ fontSize: "13px", alignSelf: "center" }}
+                      >
+                        Dashboard
+                      </Link>
                       <div className="dropdown">
                         <button
                           className="btn bg-dark dropdown-toggle text-white"

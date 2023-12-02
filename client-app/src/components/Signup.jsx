@@ -37,7 +37,6 @@ export function Signup() {
         // Maneja la respuesta del servidor (puede redirigir al usuario o mostrar un mensaje de éxito)
         navigate("/Signin");
       } else {
-        // Maneja los errores del servidor
         console.error("Error al registrar usuario");
       }
     } catch (error) {

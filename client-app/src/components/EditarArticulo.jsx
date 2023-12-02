@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { MyContext } from "../App";
 
 function EditarArticulo() {
-  //   const { listaId } = useParams();
   const { articuloId } = useParams();
   const { user, authenticated } = useContext(MyContext);
   const [listaArticulos, setlistaArticulos] = useState();
@@ -28,15 +27,13 @@ function EditarArticulo() {
 
   useEffect(() => {
     if (!authenticated) {
-      // Redirect to login if not authenticated
-      navigate("/signin");
+      navigate("/signin"); // Redirect to login if not authenticated
     }
   }, [authenticated, navigate]);
 
   useEffect(() => {
     console.log(authenticated);
     if (authenticated) {
-      // Fetch user-specific data using user.UserId and token
       const fetchUserData = async () => {
         try {
           const response1 = await fetch(
@@ -71,7 +68,6 @@ function EditarArticulo() {
               ArtRegEstatusId: data.artRegEstatusId,
               ArtEstatus: data.artEstatus,
             });
-            console.log(formData);
           } else {
             console.error("Error fetching user data");
           }
@@ -88,12 +84,10 @@ function EditarArticulo() {
     event.preventDefault();
 
     try {
-      //   console.log(formData);
-
       console.log("Request Payload:", JSON.stringify(formData));
-      // Realiza la solicitud POST al servidor para editar el artículo
-
       console.log("articuloId", articuloId, "ArtId", formData.ArtId);
+
+      // Realiza la solicitud PUT al servidor para editar el artículo
       if (authenticated) {
         const articulosResponse = await fetch(
           `http://localhost:5109/api/articulos/${articuloId}`,
@@ -132,7 +126,6 @@ function EditarArticulo() {
       }
     } catch (error) {
       console.error("Error al enviar los datos:", error);
-      // Puedes manejar errores o mostrar un mensaje de error aquí
     }
   };
 
@@ -142,7 +135,6 @@ function EditarArticulo() {
         <h3 className="mt-5 mb-5 text-center">Editar Articulo</h3>
         <form className="mt-4">
           <div className="mb-3">
-            {/* <label className="form-label">Nombre del Artículo:</label> */}
             <input
               type="text"
               className="form-control opacity-75"
@@ -154,7 +146,6 @@ function EditarArticulo() {
             />
           </div>
           <div className="mb-3">
-            {/* <label className="form-label">URL del Artículo:</label> */}
             <input
               type="text"
               className="form-control opacity-75"

@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IoArrowBackSharp } from "react-icons/io5";
@@ -15,7 +15,6 @@ export function ListasPublicas() {
   });
 
   useEffect(() => {
-    // Fetch user-specific data using user.UserId and token
     const fetchUserData = async () => {
       try {
         const usuarioResponse = await fetch(
@@ -54,7 +53,6 @@ export function ListasPublicas() {
               `${usuario.usuarioNombre} ${usuario.usuarioApellido} no tiene listas públicas.`
             );
           }
-
           console.log(data);
         } else {
           console.error("Error fetching user data");
