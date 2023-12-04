@@ -34,32 +34,14 @@ const App = () => {
         const expirationTime = decoded.exp * 1000; // Convertir la expiración a milisegundos
         const currentTime = Date.now();
 
-        if (currentTime < expirationTime) {
+        if (currentTime >= expirationTime) {
+          // Token expirado, realizar acciones necesarias (por ejemplo, redirigir al inicio de sesión)
+          alert("Tu sesión ha expirado. Inicia sesión nuevamente.");
+          handleLogout();
+          window.location.href = "/signin";
+        } else {
           // Token válido, el usuario está autenticado
           setAuthenticated(true);
-          setUser(decoded);
-        } else {
-          // Token expirado, realizar acciones necesarias (por ejemplo, redirigir al inicio de sesión)
-          const shouldContinueSession = window.confirm(
-            "Tu sesión ha expirado. ¿Deseas continuar la sesión?"
-          );
-
-          if (shouldContinueSession) {
-            setAuthenticated(true);
-            setUser(decoded);
-
-            if (
-              user[
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"
-              ] == 1
-            ) {
-              window.location.href = "/perfilAdmin";
-            } else {
-              window.location.href = "/perfilUsuario";
-            }
-          } else {
-            handleLogout(); // Redirigir al inicio de sesión o realizar otras acciones
-          }
         }
       }
     };
