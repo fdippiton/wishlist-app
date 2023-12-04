@@ -10,13 +10,15 @@ import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { MdEditSquare } from "react-icons/md";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { MdAddBox } from "react-icons/md";
+import { Dropdown } from "react-bootstrap";
 
 export function ListaRegalos() {
   const [listasRegalo, setListasRegalo] = useState(null);
   const [listaArticulos, setlistaArticulos] = useState(null);
   const { user, authenticated } = useContext(MyContext);
   const navigate = useNavigate();
-  const [filtro, setFiltro] = useState("Todas");
+  const [filtro, setFiltro] = useState("Todos");
+  const [prioridadFiltro, setPrioridadFiltro] = useState("Todas");
 
   // Obtener listaId de los parámetros de la ruta
   const { listaId } = useParams();
@@ -109,8 +111,20 @@ export function ListaRegalos() {
     }
   };
 
+  // const cambiarFiltro = (nuevoFiltro) => {
+  //   setFiltro(nuevoFiltro);
+  // };
+
   const cambiarFiltro = (nuevoFiltro) => {
-    setFiltro(nuevoFiltro);
+    // Determinar si el nuevoFiltro es de estatus o prioridad
+    if (["Todos", "No recibido", "Recibido"].includes(nuevoFiltro)) {
+      // Si es un filtro de estatus, actualizar el estado de filtro de estatus
+      setFiltro(nuevoFiltro);
+      setPrioridadFiltro("Todas");
+    } else {
+      // Si es un filtro de prioridad, actualizar el estado de filtro de prioridad
+      setPrioridadFiltro(nuevoFiltro);
+    }
   };
 
   return (
@@ -154,7 +168,66 @@ export function ListaRegalos() {
 
       <div className="row d-flex justify-content-end">
         <div className="col-4 text-end">
-          <div className=" mb-3">
+          <div className="mb-3 d-flex justify-content-end align-items-center">
+            {" "}
+            <Dropdown className="me-3 ">
+              <Dropdown.Toggle
+                variant="primary"
+                id="dropdown-basic"
+                className="border border-0"
+                style={{
+                  fontSize: "13px",
+                  backgroundColor: "#C3CFE2",
+                  color: "black",
+                }}
+              >
+                Estatus: {filtro}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu style={{ fontSize: "13px" }}>
+                <Dropdown.Item onClick={() => cambiarFiltro("Todos")}>
+                  Todos
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => cambiarFiltro("No recibido")}>
+                  No recibidos
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => cambiarFiltro("Recibido")}>
+                  Recibidos
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="primary"
+                id="dropdown-prioridad"
+                className="border border-0"
+                style={{
+                  fontSize: "13px",
+                  backgroundColor: "#C3CFE2",
+                  color: "black",
+                }}
+              >
+                Prioridad: {prioridadFiltro}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu style={{ fontSize: "13px" }}>
+                <Dropdown.Item onClick={() => cambiarFiltro("Todas")}>
+                  Todas
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => cambiarFiltro("Baja")}>
+                  Baja
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => cambiarFiltro("Media")}>
+                  Media
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => cambiarFiltro("Alta")}>
+                  Alta
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+
+          {/* <div className=" mb-3">
             <button
               className={`btn btn-sm me-2 ${
                 filtro === "Todas" ? "btn-primary" : "btn-dark"
@@ -169,7 +242,7 @@ export function ListaRegalos() {
               }`}
               onClick={() => cambiarFiltro("No recibido")}
             >
-              No recibido
+              No recibidos
             </button>
             <button
               className={`btn btn-sm ${
@@ -177,9 +250,9 @@ export function ListaRegalos() {
               }`}
               onClick={() => cambiarFiltro("Recibido")}
             >
-              Recibido
+              Recibidos
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -188,14 +261,22 @@ export function ListaRegalos() {
         <div className="col-6">
           {listaArticulos &&
             listaArticulos
-              .filter((listaArticulos) => {
-                if (filtro === "Todas") return true;
-                return (
+              .filter((articulo) => {
+                // Filtrar por estatus
+                const filtroEstatus =
+                  filtro === "Todos" ||
                   (filtro === "No recibido" &&
-                    listaArticulos.ArtRegStatus === "No recibido") ||
+                    articulo.ArtRegStatus === "No recibido") ||
                   (filtro === "Recibido" &&
-                    listaArticulos.ArtRegStatus === "Recibido")
-                );
+                    articulo.ArtRegStatus === "Recibido");
+
+                // Filtrar por prioridad
+                const filtroPrioridad =
+                  prioridadFiltro === "Todas" ||
+                  articulo.ArtPrioridad === prioridadFiltro;
+
+                // Retornar true solo si ambas condiciones se cumplen
+                return filtroEstatus && filtroPrioridad;
               })
               .map((articulo) => (
                 <div className="" key={articulo.ArtId}>
