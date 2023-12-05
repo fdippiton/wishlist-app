@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IoArrowBackSharp } from "react-icons/io5";
+import { BiSolidUserCircle } from "react-icons/bi";
 
 export function ListasPublicas() {
   const { userId } = useParams();
@@ -12,6 +13,7 @@ export function ListasPublicas() {
   const [usuario, setUsuario] = useState({
     usuarioNombre: "",
     usuarioApellido: "",
+    usuarioPhoto: null,
   });
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export function ListasPublicas() {
           setUsuario({
             usuarioNombre: data.usuNombre,
             usuarioApellido: data.usuApellidos,
+            usuarioPhoto: data.usuProfilePhoto,
           });
         }
 
@@ -68,14 +71,30 @@ export function ListasPublicas() {
   return (
     <div className="mt-5 d-flex justify-content-center flex-column">
       <div className="row ">
-        <div className="col-12 d-flex align-items-center">
+        <div className="col-12 d-flex align-items-center mb-3">
           <Link className=" mb-2 me-2" style={{ fontSize: "14px" }} to={`/`}>
             <IoArrowBackSharp style={{ width: "30px", height: "30px" }} />{" "}
           </Link>
-          <h3 className="mb-3">
-            Listas de {usuario.usuarioNombre} {usuario.usuarioApellido}
+          {usuario && usuario.usuarioPhoto ? (
+            <img
+              src={`data:image/png;base64, ${usuario.usuarioPhoto}`}
+              alt="Perfil Actual"
+              className="img-fluid rounded-circle me-3 "
+              style={{ width: "40px", height: "40px" }}
+            />
+          ) : (
+            <BiSolidUserCircle
+              className="me-3"
+              style={{ width: "40px", height: "40px" }}
+            />
+          )}
+          <h3 className="">
+            {usuario.usuarioNombre} {usuario.usuarioApellido}
           </h3>
         </div>
+      </div>
+      <div className="row">
+        <h5 className="text-center">Lista de deseos</h5>
       </div>
 
       {listasRegalos && listasRegalos.length > 0 ? (
