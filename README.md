@@ -15,6 +15,7 @@ Welcome to the Wishlist App repository! This application empowers users to curat
 - **Backend:** C# for Web API development
 - **Frontend:** React for building the user interface
 - **Database:** SQL Server for storing wishlist data
+- **Authentication:** JWT
 
 ## Getting Started
 
